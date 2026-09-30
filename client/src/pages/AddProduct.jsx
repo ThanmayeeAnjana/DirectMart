@@ -16,6 +16,8 @@ export default function AddProduct() {
 
   const [image, setImage] = useState(null);
   const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -28,6 +30,7 @@ export default function AddProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSubmitting(true);
 
     try {
       const data = new FormData();
@@ -51,6 +54,8 @@ export default function AddProduct() {
       setError(
         err.response?.data?.message || 'Failed to add product'
       );
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -150,8 +155,9 @@ export default function AddProduct() {
           <button
             className="seller-button seller-button-primary"
             type="submit"
+            disabled={submitting}
           >
-            Add Product
+            {submitting ? 'Uploading...' : 'Add Product'}
           </button>
 
         </form>
