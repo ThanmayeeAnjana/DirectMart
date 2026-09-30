@@ -1,3 +1,5 @@
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -14,6 +16,8 @@ import MyOrders from './pages/MyOrders';
 import SellerDashboard from './pages/SellerDashboard';
 import AddProduct from './pages/AddProduct';
 import SellerOrders from './pages/SellerOrders';
+import Profile from './pages/Profile';
+import AdminDashboard from './pages/AdminDashboard';
 
 export default function App() {
   return (
@@ -21,12 +25,20 @@ export default function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
+          <Route path="/forgot-password" element={<ForgotPassword />}/>
+          <Route path="/reset-password/:token" element={<ResetPassword />}/>
           <Route path="/" element={<Home />} />
           <Route path="/domain/:domainKey" element={<DomainPage />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+<Route path="/admin/dashboard" element={
+  <ProtectedRoute role="admin">
+    <AdminDashboard />
+  </ProtectedRoute>
+} />
 
           <Route path="/checkout" element={
             <ProtectedRoute role="buyer"><Checkout /></ProtectedRoute>
