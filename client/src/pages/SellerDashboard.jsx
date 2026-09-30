@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
+import './Seller.css';
 
 export default function SellerDashboard() {
   const [products, setProducts] = useState([]);
@@ -11,32 +12,91 @@ export default function SellerDashboard() {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this product?')) return;
-    await api.delete(`/products/${id}`);
-    setProducts(products.filter((p) => p._id !== id));
+
+    try {
+      await api.delete(`/products/${id}`);
+      setProducts(products.filter((p) => p._id !== id));
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to delete product');
+    }
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h2>Seller Dashboard</h2>
-      <Link to="/seller/add-product">+ Add Product</Link>
-      <Link to="/seller/orders" style={{ marginLeft: '1rem' }}>View Orders</Link>
+    <div className="seller-page">
+      <div className="seller-container">
 
-      <table style={{ width: '100%', marginTop: '1rem', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr><th>Name</th><th>Price</th><th>Stock</th><th>Domain</th><th></th></tr>
-        </thead>
-        <tbody>
-          {products.map((p) => (
-            <tr key={p._id}>
-              <td>{p.name}</td>
-              <td>₹{p.price}</td>
-              <td>{p.stock}</td>
-              <td>{p.domain}</td>
-              <td><button onClick={() => handleDelete(p._id)}>Delete</button></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <div className="seller-header">
+          <div>
+            <h2>Seller Dashboard</h2>
+            <p>Manage your products and orders</p>
+          </div>
+
+          <div className="seller-actions">
+            <Link
+              to="/seller/add-product"
+              className="seller-button seller-button-primary"
+            >
+              + Add Product
+            </Link>
+
+            <Link
+              to="/seller/orders"
+              className="seller-button seller-button-secondary"
+            >
+              View Orders
+            </Link>
+          </div>
+        </div>
+
+        <div className="seller-card">
+
+          {products.length === 0 ? (
+            <div className="empty-state">
+              <h3>No products yet</h3>
+              <p>Add your first product to start selling.</p>
+
+              <Link
+                to="/seller/add-product"
+                className="seller-button seller-button-primary"
+              >
+                Add Product
+              </Link>
+            </div>
+          ) : (
+            <table className="seller-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Domain</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {products.map((p) => (
+                  <tr key={p._id}>
+                    <td className="product-name">{p.name}</td>
+                    <td>₹{p.price}</td>
+                    <td>{p.stock}</td>
+                    <td>{p.domain}</td>
+                    <td>
+                      <button
+                        className="seller-button seller-button-danger"
+                        onClick={() => handleDelete(p._id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
+        </div>
+      </div>
     </div>
   );
 }
