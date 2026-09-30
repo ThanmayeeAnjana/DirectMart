@@ -8,24 +8,40 @@ export default function AddProduct() {
   const [form, setForm] = useState({ name: '', price: '', stock: '', description: '', domain: 'farming' });
   const [image, setImage] = useState(null);
   const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    try {
-      const data = new FormData();
-      Object.entries(form).forEach(([key, value]) => data.append(key, value));
-      if (image) data.append('image', image);
+  e.preventDefault();
+  setError('');
+  setSubmitting(true);
 
-      await api.post('/products', data, { headers: { 'Content-Type': 'multipart/form-data' } });
-      navigate('/seller/dashboard');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Failed to add product');
+  try {
+    const data = new FormData();
+
+    Object.entries(form).forEach(([key, value]) => {
+      data.append(key, value);
+    });
+
+    if (image) {
+      data.append('image', image);
     }
-  };
+
+    await api.post('/products', data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+
+    navigate('/seller/dashboard');
+  } catch (err) {
+    setError(
+      err.response?.data?.message || 'Failed to add product'
+    );
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   return (
     <div style={{ padding: '2rem', maxWidth: 400 }}>
@@ -40,7 +56,9 @@ export default function AddProduct() {
         </select>
         <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} style={{ display: 'block', marginBottom: '0.5rem' }} />
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Add Product</button>
+        <button type="submit" disabled={submitting}>
+  {submitting ? 'Uploading...' : 'Add Product'}
+</button>
       </form>
     </div>
   );

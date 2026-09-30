@@ -6,6 +6,7 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
 const orderRoutes = require('./routes/orders');
+const paymentRoutes = require('./routes/payment');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.get('/', (req, res) => res.json({ message: 'DirectMart API is running' }));
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/payment', paymentRoutes);
 
 // Fallback error handler
 app.use((err, req, res, next) => {
