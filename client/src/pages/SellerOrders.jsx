@@ -1,36 +1,103 @@
 import { useEffect, useState } from 'react';
 import api from '../api/axios';
+import './Seller.css';
 
-const STATUS_FLOW = ['placed', 'packed', 'shipped', 'delivered'];
+const STATUS_FLOW = [
+  'placed',
+  'packed',
+  'shipped',
+  'delivered',
+];
 
 export default function SellerOrders() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    api.get('/orders/seller').then((res) => setOrders(res.data));
+    api.get('/orders/seller').then((res) => {
+      setOrders(res.data);
+    });
   }, []);
 
   const updateStatus = async (id, status) => {
-    const res = await api.put(`/orders/${id}/status`, { status });
-    setOrders(orders.map((o) => (o._id === id ? res.data : o)));
+    try {
+      const res = await api.put(`/orders/${id}/status`, {
+        status,
+      });
+
+      setOrders(
+        orders.map((o) =>
+          o._id === id ? res.data : o
+        )
+      );
+    } catch (err) {
+      alert(
+        err.response?.data?.message ||
+        'Failed to update order status'
+      );
+    }
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h2>Orders</h2>
-      {orders.length === 0 && <p>No orders yet.</p>}
-      {orders.map((o) => (
-        <div key={o._id} style={{ border: '1px solid #ddd', borderRadius: 8, padding: '1rem', marginBottom: '1rem' }}>
-          <p><strong>Status:</strong> {o.status}</p>
-          <p><strong>Total:</strong> ₹{o.totalAmount}</p>
-          <ul>
-            {o.items.map((i, idx) => <li key={idx}>{i.name} x {i.quantity}</li>)}
-          </ul>
-          <select value={o.status} onChange={(e) => updateStatus(o._id, e.target.value)}>
-            {STATUS_FLOW.map((s) => <option key={s} value={s}>{s}</option>)}
-          </select>
+    <div className="seller-page">
+      <div className="seller-container">
+
+        <div className="seller-header">
+          <div>
+            <h2>Seller Orders</h2>
+            <p>Manage orders containing your products.</p>
+          </div>
         </div>
-      ))}
+
+        {orders.length === 0 ? (
+          <div className="seller-card empty-state">
+            <h3>No orders yet</h3>
+            <p>Orders from buyers will appear here.</p>
+          </div>
+        ) : (
+          orders.map((o) => (
+            <div className="order-card" key={o._id}>
+
+              <div className="order-header">
+                <div>
+                  <strong>Order #{o._id.slice(-6)}</strong>
+                </div>
+
+                <span className="order-status">
+                  {o.status}
+                </span>
+              </div>
+
+              <p className="order-total">
+                Total: ₹{o.totalAmount}
+              </p>
+
+              <ul className="order-items">
+                {o.items.map((i, idx) => (
+                  <li key={idx}>
+                    {i.name} × {i.quantity}
+                  </li>
+                ))}
+              </ul>
+
+              <select
+                className="status-select"
+                value={o.status}
+                onChange={(e) =>
+                  updateStatus(o._id, e.target.value)
+                }
+              >
+                {STATUS_FLOW.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+
+            </div>
+          ))
+        )}
+
+      </div>
     </div>
   );
 }

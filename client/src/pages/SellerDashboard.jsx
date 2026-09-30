@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
+import './Seller.css';
 
 export default function SellerDashboard() {
   const [products, setProducts] = useState([]);
@@ -16,7 +17,6 @@ export default function SellerDashboard() {
 
         // Get the latest user information from the server
         const userResponse = await api.get('/auth/me');
-
         const currentUser = userResponse.data;
 
         setUser(currentUser);
@@ -69,21 +69,26 @@ export default function SellerDashboard() {
 
   if (loading) {
     return (
-      <div style={{ padding: '2rem' }}>
-        <h2>Seller Dashboard</h2>
-        <p>Loading...</p>
+      <div className="seller-page">
+        <div className="seller-container">
+          <div className="seller-card">
+            <h2>Seller Dashboard</h2>
+            <p>Loading...</p>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (error && !user) {
     return (
-      <div style={{ padding: '2rem' }}>
-        <h2>Seller Dashboard</h2>
-
-        <p style={{ color: 'red' }}>
-          {error}
-        </p>
+      <div className="seller-page">
+        <div className="seller-container">
+          <div className="seller-card">
+            <h2>Seller Dashboard</h2>
+            <p className="error-message">{error}</p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -91,47 +96,31 @@ export default function SellerDashboard() {
   // Seller is not approved
   if (user && user.approved !== true) {
     return (
-      <div
-        style={{
-          maxWidth: '700px',
-          margin: '50px auto',
-          padding: '30px',
-          textAlign: 'center',
-          border: '1px solid #ddd',
-          borderRadius: '10px',
-        }}
-      >
-        <h2>Seller Dashboard</h2>
+      <div className="seller-page">
+        <div className="seller-container">
+          <div className="seller-card empty-state">
+            <h2>Seller Dashboard</h2>
 
-        <h3 style={{ marginTop: '30px' }}>
-          ⏳ Waiting for Admin Approval
-        </h3>
+            <h3>⏳ Waiting for Admin Approval</h3>
 
-        <p>
-          Your seller account has been created successfully.
-        </p>
+            <p>
+              Your seller account has been created successfully.
+            </p>
 
-        <p>
-          An administrator needs to approve your seller
-          account before you can add or manage products.
-        </p>
+            <p>
+              An administrator needs to approve your seller
+              account before you can add or manage products.
+            </p>
 
-        <p>
-          Please check back after your account has been
-          approved.
-        </p>
+            <p>
+              Please check back after your account has been
+              approved.
+            </p>
 
-        <div
-          style={{
-            marginTop: '25px',
-            padding: '15px',
-            background: '#f5f5f5',
-            borderRadius: '8px',
-          }}
-        >
-          <strong>
-            Status: Pending Approval
-          </strong>
+            <div className="approval-status">
+              <strong>Status: Pending Approval</strong>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -139,72 +128,95 @@ export default function SellerDashboard() {
 
   // Approved seller
   return (
-    <div style={{ padding: '2rem' }}>
-      <h2>Seller Dashboard</h2>
+    <div className="seller-page">
+      <div className="seller-container">
 
-      {error && (
-        <p style={{ color: 'red' }}>
-          {error}
-        </p>
-      )}
+        <div className="seller-header">
+          <div>
+            <h2>Seller Dashboard</h2>
+            <p>Manage your products and orders</p>
+          </div>
 
-      <div style={{ marginBottom: '20px' }}>
-        <Link to="/seller/add-product">
-          + Add Product
-        </Link>
+          <div className="seller-actions">
+            <Link
+              to="/seller/add-product"
+              className="seller-button seller-button-primary"
+            >
+              + Add Product
+            </Link>
 
-        <Link
-          to="/seller/orders"
-          style={{ marginLeft: '1rem' }}
-        >
-          View Orders
-        </Link>
+            <Link
+              to="/seller/orders"
+              className="seller-button seller-button-secondary"
+            >
+              View Orders
+            </Link>
+          </div>
+        </div>
+
+        {error && (
+          <div className="error-message">
+            {error}
+          </div>
+        )}
+
+        <div className="seller-card">
+
+          {products.length === 0 ? (
+            <div className="empty-state">
+              <h3>No products yet</h3>
+              <p>Add your first product to start selling.</p>
+
+              <Link
+                to="/seller/add-product"
+                className="seller-button seller-button-primary"
+              >
+                Add Product
+              </Link>
+            </div>
+          ) : (
+            <table className="seller-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Domain</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {products.map((product) => (
+                  <tr key={product._id}>
+                    <td className="product-name">
+                      {product.name}
+                    </td>
+
+                    <td>₹{product.price}</td>
+
+                    <td>{product.stock}</td>
+
+                    <td>{product.domain}</td>
+
+                    <td>
+                      <button
+                        className="seller-button seller-button-danger"
+                        onClick={() =>
+                          handleDelete(product._id)
+                        }
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
+        </div>
       </div>
-
-      {products.length === 0 ? (
-        <p>
-          You haven't added any products yet.
-        </p>
-      ) : (
-        <table
-          style={{
-            width: '100%',
-            marginTop: '1rem',
-            borderCollapse: 'collapse',
-          }}
-        >
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Domain</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {products.map((product) => (
-              <tr key={product._id}>
-                <td>{product.name}</td>
-                <td>₹{product.price}</td>
-                <td>{product.stock}</td>
-                <td>{product.domain}</td>
-
-                <td>
-                  <button
-                    onClick={() =>
-                      handleDelete(product._id)
-                    }
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
     </div>
   );
 }

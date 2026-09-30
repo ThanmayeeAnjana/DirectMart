@@ -1,0 +1,230 @@
+.seller-page {
+  min-height: 100vh;
+  background: #f6f7f9;
+  padding: 40px;
+}
+
+.seller-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.seller-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.seller-header h2 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.seller-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.seller-button {
+  display: inline-block;
+  padding: 11px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.seller-button-primary {
+  background: #111827;
+  color: white;
+}
+
+.seller-button-secondary {
+  background: white;
+  color: #111827;
+  border: 1px solid #d1d5db;
+}
+
+.seller-button-danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.seller-button:hover {
+  opacity: 0.9;
+}
+
+/* Dashboard */
+
+.seller-card {
+  background: white;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.seller-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.seller-table th {
+  text-align: left;
+  padding: 14px;
+  background: #f9fafb;
+  color: #6b7280;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.seller-table td {
+  padding: 16px 14px;
+  border-top: 1px solid #eee;
+}
+
+.seller-table tr:hover {
+  background: #fafafa;
+}
+
+.product-name {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Forms */
+
+.seller-form-card {
+  max-width: 650px;
+  margin: 0 auto;
+  background: white;
+  padding: 32px;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.seller-form-card h2 {
+  margin-top: 0;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #111827;
+}
+
+.form-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.error-message {
+  color: #b91c1c;
+  background: #fee2e2;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+/* Orders */
+
+.order-card {
+  background: white;
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.order-status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.order-total {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.order-items {
+  padding-left: 20px;
+  color: #4b5563;
+}
+
+.status-select {
+  padding: 9px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  background: white;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 50px;
+  color: #6b7280;
+}
+
+@media (max-width: 768px) {
+  .seller-page {
+    padding: 20px;
+  }
+
+  .seller-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .seller-actions {
+    flex-wrap: wrap;
+  }
+
+  .seller-card {
+    overflow-x: auto;
+  }
+
+  .seller-table {
+    min-width: 700px;
+  }
+
+  .seller-form-card {
+    padding: 20px;
+  }
+}
