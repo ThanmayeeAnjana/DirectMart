@@ -9,15 +9,16 @@ export default function Navbar() {
     logout();
     navigate('/');
   };
-
   return (
     <nav style={{ display: 'flex', gap: '1rem', padding: '1rem', borderBottom: '1px solid #ddd' }}>
       <Link to="/">DirectMart</Link>
       <Link to="/cart">Cart</Link>
-
       {!user && <Link to="/login">Login</Link>}
       {!user && <Link to="/signup">Sign Up</Link>}
-
+      {user && <Link to="/profile">Profile</Link>}
+{user && user.role === 'admin' && (
+  <Link to="/admin/dashboard">Admin Dashboard</Link>
+)}
       {user && user.role === 'buyer' && <Link to="/my-orders">My Orders</Link>}
       {user && user.role === 'seller' && <Link to="/seller/dashboard">Seller Dashboard</Link>}
       {user && <button onClick={handleLogout}>Logout ({user.name})</button>}
