@@ -2,25 +2,50 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 
+// Add product to localStorage cart
 function addToCart(product, quantity) {
   const cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-  const existing = cart.find(
-    (item) => item.productId === product._id
-  );
+  const existing = cart.find((item) => item.productId === product._id);
 
   if (existing) {
+    const remainingStock = product.stock - existing.quantity;
+
+    if (remainingStock <= 0) {
+      alert(
+        `You already have ${existing.quantity} ${product.name} items in your cart. ` +
+        `This is the maximum available stock.`
+      );
+      return false;
+    }
+
+    if (quantity > remainingStock) {
+      alert(
+        `You already have ${existing.quantity} ${product.name} items in your cart. ` +
+        `Only ${remainingStock} more can be added.`
+      );
+      return false;
+    }
+
     existing.quantity += quantity;
+    existing.stock = product.stock;
   } else {
+    if (quantity > product.stock) {
+      alert(`Only ${product.stock} units of ${product.name} are available.`);
+      return false;
+    }
+
     cart.push({
       productId: product._id,
       name: product.name,
       price: product.price,
+      stock: product.stock,
       quantity,
     });
   }
 
   localStorage.setItem('cart', JSON.stringify(cart));
+  return true;
 }
 
 export default function ProductDetail() {
@@ -75,9 +100,12 @@ export default function ProductDetail() {
       return;
     }
 
-    addToCart(product, quantity);
-    setError('');
-    setAdded(true);
+    const wasAdded = addToCart(product, quantity);
+
+    if (wasAdded) {
+      setError('');
+      setAdded(true);
+    }
   };
 
   const handleBuyNow = () => {
@@ -90,8 +118,11 @@ export default function ProductDetail() {
       return;
     }
 
-    addToCart(product, quantity);
-    navigate('/cart');
+    const wasAdded = addToCart(product, quantity);
+
+    if (wasAdded) {
+      navigate('/cart');
+    }
   };
 
   if (error && !product) {

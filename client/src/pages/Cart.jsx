@@ -11,8 +11,21 @@ export default function Cart() {
   }, []);
 
   const updateQuantity = (productId, quantity) => {
-    if (quantity < 1 || Number.isNaN(quantity)) {
-      return;
+    const item = cart.find((i) => i.productId === productId);
+
+    if (!item) return;
+
+    // Prevent quantity from going below 1
+    if (quantity < 1) {
+      quantity = 1;
+    }
+
+    // Prevent quantity from exceeding available stock
+    if (quantity > item.stock) {
+      alert(
+        `Only ${item.stock} units of ${item.name} are available.`
+      );
+      quantity = item.stock;
     }
 
     const updated = cart.map((item) =>
@@ -91,6 +104,10 @@ export default function Cart() {
                 <p style={styles.price}>
                   ₹{item.price} each
                 </p>
+
+                <p style={styles.stockText}>
+                  {item.stock} available
+                </p>
               </div>
 
               <div style={styles.quantitySection}>
@@ -118,6 +135,7 @@ export default function Cart() {
                       item.quantity + 1
                     )
                   }
+                  disabled={item.quantity >= item.stock}
                   style={styles.quantityButton}
                 >
                   +
@@ -211,6 +229,12 @@ const styles = {
   price: {
     color: '#666',
     margin: '0.25rem 0',
+  },
+
+  stockText: {
+    color: '#666',
+    fontSize: '0.9rem',
+    margin: 0,
   },
 
   quantitySection: {
