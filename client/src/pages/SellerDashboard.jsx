@@ -15,19 +15,16 @@ export default function SellerDashboard() {
         setLoading(true);
         setError('');
 
-        // Get the latest user information from the server
         const userResponse = await api.get('/auth/me');
         const currentUser = userResponse.data;
 
         setUser(currentUser);
 
-        // Update localStorage with the latest user data
         localStorage.setItem(
           'user',
           JSON.stringify(currentUser)
         );
 
-        // Load seller's products
         const productsResponse = await api.get(
           '/products/seller/mine'
         );
@@ -69,72 +66,104 @@ export default function SellerDashboard() {
 
   if (loading) {
     return (
-      <div className="seller-page">
+      <main className="seller-page">
         <div className="seller-container">
-          <div className="seller-card">
-            <h2>Seller Dashboard</h2>
-            <p>Loading...</p>
+          <div className="seller-loading">
+            <div className="seller-loading-icon">
+              🏪
+            </div>
+
+            <h2>Loading your dashboard</h2>
+            <p>Please wait while we fetch your products.</p>
+
+            <div className="seller-spinner"></div>
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 
   if (error && !user) {
     return (
-      <div className="seller-page">
+      <main className="seller-page">
         <div className="seller-container">
-          <div className="seller-card">
-            <h2>Seller Dashboard</h2>
-            <p className="error-message">{error}</p>
+          <div className="seller-card seller-error-card">
+            <div className="seller-status-icon">!</div>
+            <h2>Unable to load dashboard</h2>
+            <p>{error}</p>
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 
-  // Seller is not approved
   if (user && user.approved !== true) {
     return (
-      <div className="seller-page">
+      <main className="seller-page">
         <div className="seller-container">
-          <div className="seller-card empty-state">
-            <h2>Seller Dashboard</h2>
+          <div className="seller-pending-card">
+            <div className="pending-icon">
+              ⏳
+            </div>
 
-            <h3>⏳ Waiting for Admin Approval</h3>
+            <span className="seller-eyebrow">
+              SELLER ACCOUNT
+            </span>
+
+            <h1>Waiting for Admin Approval</h1>
 
             <p>
-              Your seller account has been created successfully.
+              Your seller account has been created
+              successfully.
             </p>
 
             <p>
-              An administrator needs to approve your seller
-              account before you can add or manage products.
-            </p>
-
-            <p>
-              Please check back after your account has been
-              approved.
+              An administrator needs to approve your
+              seller account before you can add or manage
+              products.
             </p>
 
             <div className="approval-status">
-              <strong>Status: Pending Approval</strong>
+              <span className="approval-dot"></span>
+              <strong>Pending Approval</strong>
             </div>
+
+            <p className="pending-note">
+              Please check back after your account has
+              been approved.
+            </p>
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 
-  // Approved seller
+  const totalProducts = products.length;
+
+  const totalStock = products.reduce(
+    (sum, product) =>
+      sum + Number(product.stock || 0),
+    0
+  );
+
   return (
-    <div className="seller-page">
+    <main className="seller-page">
       <div className="seller-container">
 
-        <div className="seller-header">
+        <header className="seller-header">
           <div>
-            <h2>Seller Dashboard</h2>
-            <p>Manage your products and orders</p>
+            <span className="seller-eyebrow">
+              SELLER CENTER
+            </span>
+
+            <h1>
+              Welcome, {user?.name || 'Seller'}
+            </h1>
+
+            <p>
+              Manage your products and keep your
+              marketplace inventory up to date.
+            </p>
           </div>
 
           <div className="seller-actions">
@@ -142,7 +171,8 @@ export default function SellerDashboard() {
               to="/seller/add-product"
               className="seller-button seller-button-primary"
             >
-              + Add Product
+              <span>＋</span>
+              Add Product
             </Link>
 
             <Link
@@ -150,73 +180,188 @@ export default function SellerDashboard() {
               className="seller-button seller-button-secondary"
             >
               View Orders
+              <span>→</span>
             </Link>
           </div>
-        </div>
+        </header>
 
         {error && (
-          <div className="error-message">
+          <div className="seller-error-banner">
+            <span>!</span>
             {error}
           </div>
         )}
 
-        <div className="seller-card">
+        <section className="seller-stats">
+          <div className="seller-stat-card">
+            <div className="seller-stat-icon">
+              📦
+            </div>
+
+            <div>
+              <span>Total Products</span>
+              <strong>{totalProducts}</strong>
+            </div>
+          </div>
+
+          <div className="seller-stat-card">
+            <div className="seller-stat-icon">
+              📊
+            </div>
+
+            <div>
+              <span>Total Stock</span>
+              <strong>{totalStock}</strong>
+            </div>
+          </div>
+
+          <div className="seller-stat-card">
+            <div className="seller-stat-icon">
+              ✓
+            </div>
+
+            <div>
+              <span>Account Status</span>
+              <strong className="seller-approved">
+                Approved
+              </strong>
+            </div>
+          </div>
+        </section>
+
+        <section className="seller-card">
+          <div className="seller-card-header">
+            <div>
+              <span className="seller-card-eyebrow">
+                INVENTORY
+              </span>
+
+              <h2>Your Products</h2>
+
+              <p>
+                Products currently listed on DirectMart.
+              </p>
+            </div>
+
+            <Link
+              to="/seller/add-product"
+              className="seller-small-button"
+            >
+              + Add Product
+            </Link>
+          </div>
 
           {products.length === 0 ? (
             <div className="empty-state">
+              <div className="empty-state-icon">
+                📦
+              </div>
+
               <h3>No products yet</h3>
-              <p>Add your first product to start selling.</p>
+
+              <p>
+                Add your first product to start selling
+                directly to customers.
+              </p>
 
               <Link
                 to="/seller/add-product"
                 className="seller-button seller-button-primary"
               >
-                Add Product
+                Add Your First Product
+                <span>→</span>
               </Link>
             </div>
           ) : (
-            <table className="seller-table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Price</th>
-                  <th>Stock</th>
-                  <th>Domain</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {products.map((product) => (
-                  <tr key={product._id}>
-                    <td className="product-name">
-                      {product.name}
-                    </td>
-
-                    <td>₹{product.price}</td>
-
-                    <td>{product.stock}</td>
-
-                    <td>{product.domain}</td>
-
-                    <td>
-                      <button
-                        className="seller-button seller-button-danger"
-                        onClick={() =>
-                          handleDelete(product._id)
-                        }
-                      >
-                        Delete
-                      </button>
-                    </td>
+            <div className="seller-table-wrapper">
+              <table className="seller-table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Domain</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+                </thead>
 
+                <tbody>
+                  {products.map((product) => (
+                    <tr key={product._id}>
+                      <td className="product-name">
+                        <div className="product-cell">
+                          <div className="product-icon">
+                            🛍️
+                          </div>
+
+                          <div>
+                            <strong>
+                              {product.name}
+                            </strong>
+
+                            <small>
+                              ID: {product._id.slice(-6)}
+                            </small>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td className="product-price">
+                        ₹{product.price}
+                      </td>
+
+                      <td>
+                        <span
+                          className={
+                            Number(product.stock) === 0
+                              ? 'stock-badge stock-empty'
+                              : Number(product.stock) <= 5
+                              ? 'stock-badge stock-low'
+                              : 'stock-badge stock-good'
+                          }
+                        >
+                          {product.stock}
+                        </span>
+                      </td>
+
+                      <td>
+                        <span className="domain-badge">
+                          {product.domain}
+                        </span>
+                      </td>
+
+                      <td>
+                        <button
+                          className="seller-button seller-button-danger"
+                          onClick={() =>
+                            handleDelete(product._id)
+                          }
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+
+        <div className="seller-help-card">
+          <span>💡</span>
+
+          <div>
+            <strong>Seller tip</strong>
+
+            <p>
+              Keep your product stock updated so customers
+              always see accurate availability.
+            </p>
+          </div>
         </div>
+
       </div>
-    </div>
+    </main>
   );
 }

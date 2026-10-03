@@ -1,142 +1,279 @@
 import { Link } from 'react-router-dom';
+import './Home.css';
 
 const DOMAINS = [
   {
     key: 'farming',
     label: 'Farming',
-    description: 'Fresh farm products from local producers.',
+    description: 'Fresh farm products directly from local producers.',
     emoji: '🌾',
   },
   {
     key: 'fishing',
     label: 'Fishing',
-    description: 'Fresh fish and products from local fishers.',
+    description: 'Fresh fish and quality products from local fishers.',
     emoji: '🐟',
   },
   {
     key: 'pottery',
     label: 'Pottery & Arts',
-    description: 'Handmade pottery and traditional products.',
+    description: 'Handcrafted pottery and traditional products.',
     emoji: '🏺',
   },
   {
     key: 'dairy',
     label: 'Dairy',
-    description: 'Fresh dairy products from local producers.',
+    description: 'Fresh and authentic dairy products from local producers.',
     emoji: '🥛',
   },
 ];
 
 export default function Home() {
   return (
-    <div style={styles.page}>
-      <section style={styles.hero}>
-        <h1 style={styles.title}>Welcome to DirectMart</h1>
+    <main className="home-page">
 
-        <p style={styles.subtitle}>
-          Buy directly from local producers — no middlemen.
-        </p>
+      {/* ================= HERO ================= */}
+      <section className="hero-section">
+        <div className="hero-content">
 
-        <p style={styles.description}>
-          Discover fresh products and handmade goods from producers in your
-          community.
-        </p>
+          <div className="hero-badge">
+            <span>🌱</span>
+            <span>Supporting Local Producers</span>
+          </div>
+
+          <h1 className="hero-title">
+            Fresh from the source.
+            <span> Direct to you.</span>
+          </h1>
+
+          <p className="hero-subtitle">
+            Discover fresh products and handmade goods directly from
+            local farmers, fishers, artisans and producers.
+          </p>
+
+          <div className="hero-actions">
+            <a href="#domains" className="hero-primary-button">
+              Explore Marketplace
+              <span>→</span>
+            </a>
+
+            <Link to="/signup" className="hero-secondary-button">
+              Become a Member
+            </Link>
+          </div>
+
+          <div className="hero-stats">
+            <div className="hero-stat">
+              <strong>4+</strong>
+              <span>Local Domains</span>
+            </div>
+
+            <div className="stat-divider"></div>
+
+            <div className="hero-stat">
+              <strong>100%</strong>
+              <span>Direct Sourcing</span>
+            </div>
+
+            <div className="stat-divider"></div>
+
+            <div className="hero-stat">
+              <strong>Local</strong>
+              <span>Producers</span>
+            </div>
+          </div>
+
+        </div>
       </section>
 
-      <section>
-        <h2 style={styles.sectionTitle}>Shop by Domain</h2>
 
-        <div style={styles.domainGrid}>
-          {DOMAINS.map((domain) => (
+      {/* ================= DOMAIN SECTION ================= */}
+      <section className="domains-section" id="domains">
+
+        <div className="section-heading">
+          <div className="section-label">
+            EXPLORE
+          </div>
+
+          <h2>
+            Shop by Domain
+          </h2>
+
+          <p>
+            Find authentic products from producers in your community.
+          </p>
+        </div>
+
+
+        <div className="domain-grid">
+
+          {DOMAINS.map((domain, index) => (
             <Link
               key={domain.key}
               to={`/domain/${domain.key}`}
-              style={styles.card}
+              className={`domain-card domain-card-${index + 1}`}
             >
-              <div style={styles.emoji}>{domain.emoji}</div>
 
-              <h3 style={styles.cardTitle}>{domain.label}</h3>
+              <div className="domain-card-top">
+                <div className="domain-icon">
+                  {domain.emoji}
+                </div>
 
-              <p style={styles.cardDescription}>
-                {domain.description}
-              </p>
+                <span className="domain-arrow">
+                  ↗
+                </span>
+              </div>
 
-              <span style={styles.button}>Explore Products</span>
+              <div className="domain-card-content">
+
+                <h3>
+                  {domain.label}
+                </h3>
+
+                <p>
+                  {domain.description}
+                </p>
+
+                <span className="domain-link">
+                  Explore Products
+                  <span>→</span>
+                </span>
+
+              </div>
+
             </Link>
           ))}
+
         </div>
       </section>
-    </div>
+
+
+      {/* ================= WHY DIRECTMART ================= */}
+      <section className="why-section">
+
+        <div className="why-content">
+
+          <div className="why-text">
+
+            <div className="section-label">
+              WHY DIRECTMART
+            </div>
+
+            <h2>
+              From local hands
+              <br />
+              <span>to your home.</span>
+            </h2>
+
+            <p>
+              DirectMart connects you directly with local producers,
+              helping you discover quality products while supporting
+              the people who make and grow them.
+            </p>
+
+            <Link to="/signup" className="why-button">
+              Join DirectMart
+              <span>→</span>
+            </Link>
+
+          </div>
+
+
+          <div className="benefits-grid">
+
+            <div className="benefit-card">
+              <div className="benefit-icon">
+                🌱
+              </div>
+
+              <h3>
+                Local Producers
+              </h3>
+
+              <p>
+                Discover products created by producers in your community.
+              </p>
+            </div>
+
+
+            <div className="benefit-card">
+              <div className="benefit-icon">
+                🤝
+              </div>
+
+              <h3>
+                Direct Connection
+              </h3>
+
+              <p>
+                Buy directly from producers without unnecessary middlemen.
+              </p>
+            </div>
+
+
+            <div className="benefit-card">
+              <div className="benefit-icon">
+                ✨
+              </div>
+
+              <h3>
+                Authentic Products
+              </h3>
+
+              <p>
+                Find fresh, handmade and locally produced goods.
+              </p>
+            </div>
+
+
+            <div className="benefit-card">
+              <div className="benefit-icon">
+                🏡
+              </div>
+
+              <h3>
+                Community First
+              </h3>
+
+              <p>
+                Support local communities by choosing local products.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* ================= CTA ================= */}
+      <section className="home-cta">
+
+        <div className="cta-content">
+
+          <div className="cta-icon">
+            🌿
+          </div>
+
+          <h2>
+            Ready to discover something local?
+          </h2>
+
+          <p>
+            Explore products from farmers, fishers, artisans and
+            dairy producers around you.
+          </p>
+
+          <Link to="/signup" className="cta-button">
+            Start Exploring
+            <span>→</span>
+          </Link>
+
+        </div>
+
+      </section>
+
+    </main>
   );
 }
-
-const styles = {
-  page: {
-    padding: '2rem',
-    maxWidth: '1200px',
-    margin: '0 auto',
-  },
-
-  hero: {
-    textAlign: 'center',
-    padding: '3rem 1rem',
-  },
-
-  title: {
-    fontSize: '2.5rem',
-    marginBottom: '1rem',
-  },
-
-  subtitle: {
-    fontSize: '1.2rem',
-    marginBottom: '0.5rem',
-  },
-
-  description: {
-    color: '#666',
-  },
-
-  sectionTitle: {
-    textAlign: 'center',
-    marginBottom: '2rem',
-  },
-
-  domainGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-    gap: '1.5rem',
-  },
-
-  card: {
-    border: '1px solid #ddd',
-    borderRadius: '12px',
-    padding: '2rem',
-    textAlign: 'center',
-    textDecoration: 'none',
-    color: '#222',
-    backgroundColor: '#fff',
-  },
-
-  emoji: {
-    fontSize: '3rem',
-    marginBottom: '1rem',
-  },
-
-  cardTitle: {
-    marginBottom: '0.75rem',
-  },
-
-  cardDescription: {
-    color: '#666',
-    minHeight: '48px',
-  },
-
-  button: {
-    display: 'inline-block',
-    marginTop: '1rem',
-    padding: '0.6rem 1rem',
-    borderRadius: '6px',
-    backgroundColor: '#222',
-    color: '#fff',
-  },
-};

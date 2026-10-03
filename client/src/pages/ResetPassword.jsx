@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import api from '../api/axios';
+import './ResetPassword.css';
 
 export default function ResetPassword() {
   const { token } = useParams();
@@ -62,83 +63,110 @@ export default function ResetPassword() {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: '500px',
-        margin: '40px auto',
-        padding: '20px',
-      }}
-    >
-      <h2>Reset Password</h2>
+    <main className="reset-page">
+      <div className="reset-container">
 
-      <p>
-        Enter your new password below.
-      </p>
+        <div className="reset-brand">
+          <div className="reset-brand-icon">🔑</div>
 
-      {message && (
-        <p style={{ color: 'green' }}>
-          {message}
-        </p>
-      )}
+          <h1>Create a new password</h1>
 
-      {error && (
-        <p style={{ color: 'red' }}>
-          {error}
-        </p>
-      )}
-
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '15px' }}>
-          <label>New Password</label>
-          <br />
-
-          <input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="Enter new password"
-            style={{
-              width: '100%',
-              padding: '8px',
-              boxSizing: 'border-box',
-            }}
-          />
+          <p>
+            Choose a new password to secure your
+            DirectMart account.
+          </p>
         </div>
 
-        <div style={{ marginBottom: '15px' }}>
-          <label>Confirm New Password</label>
-          <br />
+        <div className="reset-card">
 
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) =>
-              setConfirmPassword(e.target.value)
-            }
-            placeholder="Confirm new password"
-            style={{
-              width: '100%',
-              padding: '8px',
-              boxSizing: 'border-box',
-            }}
-          />
+          <div className="reset-card-header">
+            <h2>Reset password</h2>
+            <p>
+              Your new password must be at least 6 characters long.
+            </p>
+          </div>
+
+          {message && (
+            <div className="reset-success">
+              {message}
+              <span>
+                Redirecting you to login...
+              </span>
+            </div>
+          )}
+
+          {error && (
+            <div className="reset-error">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="reset-form">
+
+            <div className="reset-form-group">
+              <label htmlFor="new-password">
+                New password
+              </label>
+
+              <input
+                id="new-password"
+                type="password"
+                value={newPassword}
+                onChange={(e) =>
+                  setNewPassword(e.target.value)
+                }
+                placeholder="Enter your new password"
+                required
+              />
+            </div>
+
+            <div className="reset-form-group">
+              <label htmlFor="confirm-password">
+                Confirm new password
+              </label>
+
+              <input
+                id="confirm-password"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) =>
+                  setConfirmPassword(e.target.value)
+                }
+                placeholder="Enter your new password again"
+                required
+              />
+            </div>
+
+            <div className="password-requirement">
+              <span>✓</span>
+              Password must contain at least 6 characters
+            </div>
+
+            <button
+              type="submit"
+              className="reset-submit"
+              disabled={loading}
+            >
+              {loading
+                ? 'Resetting password...'
+                : 'Set new password'}
+            </button>
+
+          </form>
+
+          <div className="reset-back">
+            <Link to="/login">
+              ← Back to Login
+            </Link>
+          </div>
+
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-        >
-          {loading
-            ? 'Resetting Password...'
-            : 'Set New Password'}
-        </button>
-      </form>
+        <p className="reset-footer">
+          Keep your account secure with a strong password.
+        </p>
 
-      <p style={{ marginTop: '20px' }}>
-        <Link to="/login">
-          Back to Login
-        </Link>
-      </p>
-    </div>
+      </div>
+    </main>
   );
 }

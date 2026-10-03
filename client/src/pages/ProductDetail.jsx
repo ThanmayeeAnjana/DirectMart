@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
+import './ProductDetail.css';
 
 // Add product to localStorage cart
 function addToCart(product, quantity) {
   const cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-  const existing = cart.find((item) => item.productId === product._id);
+  const existing = cart.find(
+    (item) => item.productId === product._id
+  );
 
   if (existing) {
     const remainingStock = product.stock - existing.quantity;
@@ -31,7 +34,9 @@ function addToCart(product, quantity) {
     existing.stock = product.stock;
   } else {
     if (quantity > product.stock) {
-      alert(`Only ${product.stock} units of ${product.name} are available.`);
+      alert(
+        `Only ${product.stock} units of ${product.name} are available.`
+      );
       return false;
     }
 
@@ -127,292 +132,256 @@ export default function ProductDetail() {
 
   if (error && !product) {
     return (
-      <div style={styles.message}>
-        <p style={styles.error}>{error}</p>
-        <button onClick={() => navigate(-1)}>
-          Go Back
-        </button>
-      </div>
+      <main className="product-detail-page">
+        <div className="product-state">
+          <div className="product-state-icon">!</div>
+
+          <h2>Unable to load product</h2>
+
+          <p>{error}</p>
+
+          <button
+            className="state-back-button"
+            onClick={() => navigate(-1)}
+          >
+            ← Go Back
+          </button>
+        </div>
+      </main>
     );
   }
 
   if (!product) {
     return (
-      <div style={styles.message}>
-        <p>Loading product...</p>
-      </div>
+      <main className="product-detail-page">
+        <div className="product-state">
+          <div className="product-loading-spinner"></div>
+
+          <h2>Loading product...</h2>
+
+          <p>We're getting the product details for you.</p>
+        </div>
+      </main>
     );
   }
 
   const outOfStock = product.stock <= 0;
 
   return (
-    <div style={styles.page}>
-      <button
-        onClick={() => navigate(-1)}
-        style={styles.backButton}
-      >
-        ← Back
-      </button>
+    <main className="product-detail-page">
 
-      <div style={styles.productContainer}>
-        <div style={styles.imageContainer}>
-          {product.imageUrl ? (
-            <img
-              src={product.imageUrl}
-              alt={product.name}
-              style={styles.image}
-            />
-          ) : (
-            <div style={styles.noImage}>
-              No Image Available
+      <div className="product-detail-container">
+
+        <button
+          onClick={() => navigate(-1)}
+          className="product-back-button"
+        >
+          ← Back to products
+        </button>
+
+        <div className="product-detail-card">
+
+          {/* Product image */}
+          <div className="product-detail-image-section">
+
+            <div className="product-detail-image-wrapper">
+
+              {product.imageUrl ? (
+                <img
+                  src={product.imageUrl}
+                  alt={product.name}
+                  className="product-detail-image"
+                />
+              ) : (
+                <div className="product-detail-no-image">
+                  <span>🛍️</span>
+                  <p>No image available</p>
+                </div>
+              )}
+
+              <span
+                className={`detail-stock-badge ${
+                  outOfStock
+                    ? 'detail-out-stock'
+                    : 'detail-in-stock'
+                }`}
+              >
+                {outOfStock
+                  ? 'Out of stock'
+                  : 'In stock'}
+              </span>
+
             </div>
-          )}
-        </div>
 
-        <div style={styles.details}>
-          <h1 style={styles.title}>{product.name}</h1>
+          </div>
 
-          <p style={styles.price}>
-            ₹{product.price}
-          </p>
+          {/* Product information */}
+          <div className="product-detail-info">
 
-          <p style={styles.description}>
-            {product.description || 'No description available.'}
-          </p>
+            <span className="product-detail-label">
+              LOCAL PRODUCER
+            </span>
 
-          <p style={styles.stock}>
-            {outOfStock
-              ? 'Out of stock'
-              : `${product.stock} available`}
-          </p>
+            <h1 className="product-detail-title">
+              {product.name}
+            </h1>
 
-          <p style={styles.seller}>
-            Sold by:{' '}
-            <strong>
-              {product.sellerId?.name || 'Local Producer'}
-            </strong>
-          </p>
+            <div className="product-detail-price">
+              ₹{product.price}
+            </div>
 
-          {!outOfStock && (
-            <>
-              <div style={styles.quantitySection}>
-                <label htmlFor="quantity">
-                  Quantity:
-                </label>
+            <div className="product-divider"></div>
 
-                <div style={styles.quantityControls}>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleQuantityChange(quantity - 1)
+            <div className="product-detail-description">
+              <h3>About this product</h3>
+
+              <p>
+                {product.description ||
+                  'No description available for this product.'}
+              </p>
+            </div>
+
+            <div className="product-meta">
+
+              <div className="product-meta-item">
+                <span className="meta-icon">📦</span>
+
+                <div>
+                  <small>Availability</small>
+
+                  <strong
+                    className={
+                      outOfStock
+                        ? 'meta-out-stock'
+                        : 'meta-in-stock'
                     }
-                    disabled={quantity <= 1}
                   >
-                    −
-                  </button>
-
-                  <input
-                    id="quantity"
-                    type="number"
-                    min="1"
-                    max={product.stock}
-                    value={quantity}
-                    onChange={(e) =>
-                      handleQuantityChange(e.target.value)
-                    }
-                    style={styles.quantityInput}
-                  />
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleQuantityChange(quantity + 1)
-                    }
-                    disabled={quantity >= product.stock}
-                  >
-                    +
-                  </button>
+                    {outOfStock
+                      ? 'Out of stock'
+                      : `${product.stock} available`}
+                  </strong>
                 </div>
               </div>
 
-              {error && (
-                <p style={styles.error}>
-                  {error}
-                </p>
-              )}
+              <div className="product-meta-item">
+                <span className="meta-icon">👤</span>
 
-              {added && (
-                <p style={styles.success}>
-                  Product added to cart!
-                </p>
-              )}
+                <div>
+                  <small>Sold by</small>
 
-              <div style={styles.buttons}>
-                <button
-                  onClick={handleAddToCart}
-                  style={styles.cartButton}
-                >
-                  Add to Cart
-                </button>
-
-                <button
-                  onClick={handleBuyNow}
-                  style={styles.buyButton}
-                >
-                  Buy Now
-                </button>
+                  <strong>
+                    {product.sellerId?.name ||
+                      'Local Producer'}
+                  </strong>
+                </div>
               </div>
-            </>
-          )}
 
-          {outOfStock && (
-            <button
-              disabled
-              style={styles.disabledButton}
-            >
-              Out of Stock
-            </button>
-          )}
+            </div>
+
+            {!outOfStock && (
+              <>
+
+                <div className="quantity-section">
+
+                  <label htmlFor="quantity">
+                    Quantity
+                  </label>
+
+                  <div className="quantity-controls">
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleQuantityChange(quantity - 1)
+                      }
+                      disabled={quantity <= 1}
+                      className="quantity-button"
+                    >
+                      −
+                    </button>
+
+                    <input
+                      id="quantity"
+                      type="number"
+                      min="1"
+                      max={product.stock}
+                      value={quantity}
+                      onChange={(e) =>
+                        handleQuantityChange(e.target.value)
+                      }
+                      className="quantity-input"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleQuantityChange(quantity + 1)
+                      }
+                      disabled={quantity >= product.stock}
+                      className="quantity-button"
+                    >
+                      +
+                    </button>
+
+                  </div>
+
+                  <span className="quantity-hint">
+                    Maximum {product.stock} available
+                  </span>
+
+                </div>
+
+                {error && (
+                  <div className="detail-error">
+                    {error}
+                  </div>
+                )}
+
+                {added && (
+                  <div className="detail-success">
+                    <span>✓</span>
+                    Product added to your cart!
+                  </div>
+                )}
+
+                <div className="product-action-buttons">
+
+                  <button
+                    onClick={handleAddToCart}
+                    className="add-cart-button"
+                  >
+                    <span>🛒</span>
+                    Add to Cart
+                  </button>
+
+                  <button
+                    onClick={handleBuyNow}
+                    className="buy-now-button"
+                  >
+                    Buy Now
+                    <span>→</span>
+                  </button>
+
+                </div>
+
+              </>
+            )}
+
+            {outOfStock && (
+              <button
+                disabled
+                className="detail-disabled-button"
+              >
+                Currently unavailable
+              </button>
+            )}
+
+          </div>
+
         </div>
+
       </div>
-    </div>
+
+    </main>
   );
 }
-
-const styles = {
-  page: {
-    padding: '2rem',
-    maxWidth: '1100px',
-    margin: '0 auto',
-  },
-
-  backButton: {
-    border: 'none',
-    background: 'none',
-    cursor: 'pointer',
-    marginBottom: '1.5rem',
-    fontSize: '1rem',
-  },
-
-  productContainer: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '2rem',
-  },
-
-  imageContainer: {
-    width: '100%',
-  },
-
-  image: {
-    width: '100%',
-    maxHeight: '500px',
-    objectFit: 'cover',
-    borderRadius: '12px',
-  },
-
-  noImage: {
-    width: '100%',
-    height: '400px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#f3f3f3',
-    borderRadius: '12px',
-    color: '#777',
-  },
-
-  details: {
-    padding: '1rem',
-  },
-
-  title: {
-    marginBottom: '1rem',
-  },
-
-  price: {
-    fontSize: '1.7rem',
-    fontWeight: 'bold',
-    marginBottom: '1rem',
-  },
-
-  description: {
-    color: '#555',
-    lineHeight: 1.6,
-  },
-
-  stock: {
-    marginTop: '1rem',
-    fontWeight: 'bold',
-  },
-
-  seller: {
-    marginTop: '1rem',
-    color: '#555',
-  },
-
-  quantitySection: {
-    marginTop: '1.5rem',
-  },
-
-  quantityControls: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    marginTop: '0.5rem',
-  },
-
-  quantityInput: {
-    width: '60px',
-    padding: '0.5rem',
-    textAlign: 'center',
-  },
-
-  buttons: {
-    display: 'flex',
-    gap: '0.75rem',
-    marginTop: '1.5rem',
-  },
-
-  cartButton: {
-    padding: '0.75rem 1.2rem',
-    border: 'none',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    backgroundColor: '#222',
-    color: '#fff',
-  },
-
-  buyButton: {
-    padding: '0.75rem 1.2rem',
-    border: 'none',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    backgroundColor: '#555',
-    color: '#fff',
-  },
-
-  disabledButton: {
-    padding: '0.75rem 1.2rem',
-    border: 'none',
-    borderRadius: '6px',
-    backgroundColor: '#ccc',
-    color: '#666',
-  },
-
-  success: {
-    color: 'green',
-    marginTop: '1rem',
-  },
-
-  error: {
-    color: 'red',
-    marginTop: '1rem',
-  },
-
-  message: {
-    padding: '2rem',
-    textAlign: 'center',
-  },
-};

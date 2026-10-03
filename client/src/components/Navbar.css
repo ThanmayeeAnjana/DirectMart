@@ -1,0 +1,583 @@
+/* =====================================================
+   DIRECTMART GLOBAL NAVBAR
+   ===================================================== */
+
+/* ---------- Design Variables ---------- */
+
+:root {
+  --dm-primary: #176b4d;
+  --dm-primary-dark: #0f5139;
+  --dm-primary-light: #e8f5ee;
+
+  --dm-accent: #e4a63a;
+
+  --dm-text: #17211b;
+  --dm-text-secondary: #56635b;
+  --dm-text-muted: #7b857e;
+
+  --dm-white: #ffffff;
+  --dm-background: #f7faf8;
+
+  --dm-border: #e2e8e4;
+
+  --dm-danger: #b94a3d;
+  --dm-danger-background: #fff3f1;
+
+  --dm-shadow-small:
+    0 2px 8px rgba(23, 33, 27, 0.06);
+
+  --dm-shadow-medium:
+    0 8px 25px rgba(23, 33, 27, 0.10);
+
+  --dm-radius-small: 8px;
+  --dm-radius-medium: 12px;
+  --dm-radius-large: 18px;
+
+  --dm-container-width: 1200px;
+}
+
+
+/* =====================================================
+   GLOBAL BASE STYLES
+   ===================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+
+  background: var(--dm-background);
+
+  color: var(--dm-text);
+
+  line-height: 1.6;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.site-header {
+  position: sticky;
+
+  top: 0;
+
+  z-index: 1000;
+
+  width: 100%;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border-bottom:
+    1px solid var(--dm-border);
+
+  backdrop-filter: blur(12px);
+
+  -webkit-backdrop-filter: blur(12px);
+}
+
+
+/* =====================================================
+   NAVBAR
+   ===================================================== */
+
+.navbar {
+  width: 100%;
+}
+
+.navbar-container {
+  width: 100%;
+
+  max-width: var(--dm-container-width);
+
+  min-height: 76px;
+
+  margin: 0 auto;
+
+  padding: 0 24px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+
+/* =====================================================
+   BRAND
+   ===================================================== */
+
+.brand {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  text-decoration: none;
+
+  color: var(--dm-text);
+
+  flex-shrink: 0;
+}
+
+.brand:hover {
+  text-decoration: none;
+}
+
+
+/* Logo circle */
+
+.brand-icon {
+  width: 40px;
+
+  height: 40px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    var(--dm-primary-light);
+
+  font-size: 21px;
+
+  box-shadow:
+    var(--dm-shadow-small);
+}
+
+
+/* Logo text */
+
+.brand-text {
+  font-size: 23px;
+
+  font-weight: 800;
+
+  letter-spacing: -0.6px;
+
+  color: var(--dm-text);
+}
+
+.brand-text span {
+  color: var(--dm-primary);
+}
+
+
+/* =====================================================
+   NAVIGATION MENU
+   ===================================================== */
+
+.nav-menu {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+}
+
+
+/* =====================================================
+   NORMAL NAVIGATION LINK
+   ===================================================== */
+
+.nav-link {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 10px 13px;
+
+  border-radius:
+    var(--dm-radius-small);
+
+  text-decoration: none;
+
+  color:
+    var(--dm-text-secondary);
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.nav-link:hover {
+  color:
+    var(--dm-primary);
+
+  background:
+    var(--dm-primary-light);
+
+  text-decoration: none;
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* Icons */
+
+.nav-icon {
+  font-size: 15px;
+
+  line-height: 1;
+}
+
+
+/* =====================================================
+   SIGN UP BUTTON
+   ===================================================== */
+
+.nav-signup {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-left: 7px;
+
+  padding: 10px 18px;
+
+  border-radius:
+    var(--dm-radius-small);
+
+  background:
+    var(--dm-primary);
+
+  color:
+    var(--dm-white);
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.nav-signup:hover {
+  background:
+    var(--dm-primary-dark);
+
+  color:
+    var(--dm-white);
+
+  text-decoration: none;
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    var(--dm-shadow-small);
+}
+
+
+/* =====================================================
+   LOGOUT BUTTON
+   ===================================================== */
+
+.nav-logout {
+  margin-left: 7px;
+
+  padding: 9px 15px;
+
+  border:
+    1px solid var(--dm-border);
+
+  border-radius:
+    var(--dm-radius-small);
+
+  background:
+    var(--dm-white);
+
+  color:
+    var(--dm-text-secondary);
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.nav-logout:hover {
+  background:
+    var(--dm-danger-background);
+
+  border-color:
+    #efc8c2;
+
+  color:
+    var(--dm-danger);
+}
+
+
+/* =====================================================
+   MOBILE MENU BUTTON
+   ===================================================== */
+
+.mobile-menu-button {
+  display: none;
+
+  width: 43px;
+
+  height: 43px;
+
+  padding: 8px;
+
+  border:
+    1px solid var(--dm-border);
+
+  border-radius:
+    var(--dm-radius-small);
+
+  background:
+    var(--dm-white);
+
+  transition:
+    background 0.2s ease;
+}
+
+.mobile-menu-button:hover {
+  background:
+    var(--dm-primary-light);
+}
+
+
+/* Hamburger lines */
+
+.mobile-menu-button span {
+  display: block;
+
+  width: 100%;
+
+  height: 2px;
+
+  margin: 5px 0;
+
+  background:
+    var(--dm-text);
+
+  border-radius: 2px;
+}
+
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media (max-width: 950px) {
+
+  .navbar-container {
+    min-height: 70px;
+
+    padding:
+      0 20px;
+  }
+
+  .nav-menu {
+    gap: 2px;
+  }
+
+  .nav-link {
+    padding:
+      9px 10px;
+
+    font-size: 13px;
+  }
+
+  .nav-signup {
+    padding:
+      9px 14px;
+  }
+
+  .nav-logout {
+    padding:
+      8px 12px;
+  }
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 800px) {
+
+  .navbar-container {
+    min-height: 68px;
+
+    padding:
+      0 18px;
+  }
+
+
+  /* Show hamburger */
+
+  .mobile-menu-button {
+    display: block;
+  }
+
+
+  /* Hide menu */
+
+  .nav-menu {
+    position: absolute;
+
+    top: 68px;
+
+    left: 0;
+
+    right: 0;
+
+    display: none;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 5px;
+
+    padding:
+      14px 18px 20px;
+
+    background:
+      var(--dm-white);
+
+    border-bottom:
+      1px solid var(--dm-border);
+
+    box-shadow:
+      var(--dm-shadow-medium);
+  }
+
+
+  /* Open menu */
+
+  .nav-menu-open {
+    display: flex;
+  }
+
+
+  /* Mobile links */
+
+  .nav-link {
+    width: 100%;
+
+    padding:
+      13px 14px;
+
+    border-radius:
+      var(--dm-radius-small);
+
+    font-size: 15px;
+  }
+
+
+  /* Mobile signup */
+
+  .nav-signup {
+    width: 100%;
+
+    margin:
+      5px 0 0;
+
+    padding:
+      12px;
+  }
+
+
+  /* Mobile logout */
+
+  .nav-logout {
+    width: 100%;
+
+    margin:
+      5px 0 0;
+
+    padding:
+      12px;
+  }
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 480px) {
+
+  .navbar-container {
+    padding:
+      0 14px;
+  }
+
+  .brand {
+    gap: 7px;
+  }
+
+  .brand-icon {
+    width: 35px;
+
+    height: 35px;
+
+    font-size: 18px;
+  }
+
+  .brand-text {
+    font-size: 20px;
+  }
+
+  .mobile-menu-button {
+    width: 40px;
+
+    height: 40px;
+  }
+}
