@@ -12,6 +12,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import VerifyEmail from './pages/VerifyEmail';
 import MyOrders from './pages/MyOrders';
 import SellerDashboard from './pages/SellerDashboard';
 import AddProduct from './pages/AddProduct';
@@ -24,38 +25,116 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Navbar />
+
         <Routes>
-          <Route path="/forgot-password" element={<ForgotPassword />}/>
-          <Route path="/reset-password/:token" element={<ResetPassword />}/>
-          <Route path="/" element={<Home />} />
-          <Route path="/domain/:domainKey" element={<DomainPage />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-<Route path="/admin/dashboard" element={
-  <ProtectedRoute role="admin">
-    <AdminDashboard />
-  </ProtectedRoute>
-} />
+          <Route
+            path="/forgot-password"
+            element={<ForgotPassword />}
+          />
 
-          <Route path="/checkout" element={
-            <ProtectedRoute role="buyer"><Checkout /></ProtectedRoute>
-          } />
-          <Route path="/my-orders" element={
-            <ProtectedRoute role="buyer"><MyOrders /></ProtectedRoute>
-          } />
+          <Route
+            path="/reset-password/:token"
+            element={<ResetPassword />}
+          />
 
-          <Route path="/seller/dashboard" element={
-            <ProtectedRoute role="seller"><SellerDashboard /></ProtectedRoute>
-          } />
-          <Route path="/seller/add-product" element={
-            <ProtectedRoute role="seller"><AddProduct /></ProtectedRoute>
-          } />
-          <Route path="/seller/orders" element={
-            <ProtectedRoute role="seller"><SellerOrders /></ProtectedRoute>
-          } />
+          <Route
+            path="/"
+            element={<Home />}
+          />
+
+          <Route
+            path="/domain/:domainKey"
+            element={<DomainPage />}
+          />
+
+          <Route
+            path="/product/:id"
+            element={<ProductDetail />}
+          />
+
+          <Route
+            path="/cart"
+            element={<Cart />}
+          />
+
+          <Route
+            path="/login"
+            element={<Login />}
+          />
+
+          <Route
+            path="/signup"
+            element={<Signup />}
+          />
+
+          {/* Email OTP verification */}
+          <Route
+            path="/verify-email"
+            element={<VerifyEmail />}
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute role="admin">
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute role="buyer">
+                <Checkout />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/my-orders"
+            element={
+              <ProtectedRoute role="buyer">
+                <MyOrders />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/seller/dashboard"
+            element={
+              <ProtectedRoute role="seller">
+                <SellerDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/seller/add-product"
+            element={
+              <ProtectedRoute role="seller">
+                <AddProduct />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/seller/orders"
+            element={
+              <ProtectedRoute role="seller">
+                <SellerOrders />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

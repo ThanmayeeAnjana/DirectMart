@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
+    name: {
+      type: String,
+      required: true,
+    },
 
     email: {
       type: String,
@@ -32,29 +35,17 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
 
-    // Email verification
     emailVerified: {
       type: Boolean,
       default: false,
     },
 
-    emailVerificationToken: {
+    emailOtpHash: {
       type: String,
       default: null,
     },
 
-    emailVerificationExpires: {
-      type: Date,
-      default: null,
-    },
-
-    // Password reset
-    resetPasswordToken: {
-      type: String,
-      default: null,
-    },
-
-    resetPasswordExpires: {
+    emailOtpExpiresAt: {
       type: Date,
       default: null,
     },
