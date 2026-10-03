@@ -1,30 +1,35 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Cart.css';
 
 export default function Cart() {
   const [cart, setCart] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const savedCart = JSON.parse(
+      localStorage.getItem('cart') || '[]'
+    );
+
     setCart(savedCart);
   }, []);
 
   const updateQuantity = (productId, quantity) => {
-    const item = cart.find((i) => i.productId === productId);
+    const item = cart.find(
+      (i) => i.productId === productId
+    );
 
     if (!item) return;
 
-    // Prevent quantity from going below 1
     if (quantity < 1) {
       quantity = 1;
     }
 
-    // Prevent quantity from exceeding available stock
     if (quantity > item.stock) {
       alert(
         `Only ${item.stock} units of ${item.name} are available.`
       );
+
       quantity = item.stock;
     }
 
@@ -35,7 +40,10 @@ export default function Cart() {
     );
 
     setCart(updated);
-    localStorage.setItem('cart', JSON.stringify(updated));
+    localStorage.setItem(
+      'cart',
+      JSON.stringify(updated)
+    );
   };
 
   const removeItem = (productId) => {
@@ -44,7 +52,10 @@ export default function Cart() {
     );
 
     setCart(updated);
-    localStorage.setItem('cart', JSON.stringify(updated));
+    localStorage.setItem(
+      'cart',
+      JSON.stringify(updated)
+    );
   };
 
   const clearCart = () => {
@@ -53,268 +64,261 @@ export default function Cart() {
   };
 
   const total = cart.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) =>
+      sum + item.price * item.quantity,
+    0
+  );
+
+  const totalItems = cart.reduce(
+    (sum, item) => sum + item.quantity,
     0
   );
 
   if (cart.length === 0) {
     return (
-      <div style={styles.emptyContainer}>
-        <h2>Your Cart</h2>
+      <main className="cart-page">
+        <div className="empty-cart">
 
-        <p style={styles.emptyText}>
-          Your cart is empty.
-        </p>
+          <div className="empty-cart-icon">
+            🛒
+          </div>
 
-        <button
-          onClick={() => navigate('/')}
-          style={styles.primaryButton}
-        >
-          Continue Shopping
-        </button>
-      </div>
+          <span className="cart-eyebrow">
+            YOUR SHOPPING CART
+          </span>
+
+          <h1>Your cart is empty</h1>
+
+          <p>
+            Looks like you haven't added anything yet.
+            Explore products from local producers and
+            find something you love.
+          </p>
+
+          <button
+            onClick={() => navigate('/')}
+            className="cart-primary-button"
+          >
+            Start Shopping
+            <span>→</span>
+          </button>
+
+        </div>
+      </main>
     );
   }
 
   return (
-    <div style={styles.page}>
-      <div style={styles.header}>
-        <h2>Your Cart</h2>
+    <main className="cart-page">
 
-        <button
-          onClick={clearCart}
-          style={styles.clearButton}
-        >
-          Clear Cart
-        </button>
-      </div>
+      <div className="cart-container">
 
-      <div style={styles.cartContainer}>
-        {cart.map((item) => {
-          const subtotal = item.price * item.quantity;
+        {/* Header */}
+        <div className="cart-header">
 
-          return (
-            <div
-              key={item.productId}
-              style={styles.cartItem}
-            >
-              <div style={styles.itemInfo}>
-                <h3>{item.name}</h3>
+          <div>
+            <span className="cart-eyebrow">
+              YOUR SHOPPING CART
+            </span>
 
-                <p style={styles.price}>
-                  ₹{item.price} each
-                </p>
+            <h1>Your Cart</h1>
 
-                <p style={styles.stockText}>
-                  {item.stock} available
-                </p>
-              </div>
+            <p>
+              Review your items before checkout.
+            </p>
+          </div>
 
-              <div style={styles.quantitySection}>
-                <button
-                  onClick={() =>
-                    updateQuantity(
-                      item.productId,
-                      item.quantity - 1
-                    )
-                  }
-                  disabled={item.quantity <= 1}
-                  style={styles.quantityButton}
-                >
-                  −
-                </button>
+          <button
+            onClick={clearCart}
+            className="clear-cart-button"
+          >
+            Clear Cart
+          </button>
 
-                <span style={styles.quantity}>
-                  {item.quantity}
-                </span>
+        </div>
 
-                <button
-                  onClick={() =>
-                    updateQuantity(
-                      item.productId,
-                      item.quantity + 1
-                    )
-                  }
-                  disabled={item.quantity >= item.stock}
-                  style={styles.quantityButton}
-                >
-                  +
-                </button>
-              </div>
+        <div className="cart-layout">
 
-              <div style={styles.subtotal}>
-                <strong>₹{subtotal}</strong>
-              </div>
+          {/* Items */}
+          <section className="cart-items-section">
 
-              <button
-                onClick={() => removeItem(item.productId)}
-                style={styles.removeButton}
-              >
-                Remove
-              </button>
+            <div className="cart-items-header">
+              <span>
+                {totalItems}{' '}
+                {totalItems === 1
+                  ? 'item'
+                  : 'items'}
+              </span>
+
+              <span>Subtotal</span>
             </div>
-          );
-        })}
-      </div>
 
-      <div style={styles.summary}>
-        <h3>Order Summary</h3>
+            <div className="cart-items">
 
-        <div style={styles.totalRow}>
-          <span>Total</span>
-          <strong>₹{total}</strong>
+              {cart.map((item) => {
+                const subtotal =
+                  item.price * item.quantity;
+
+                return (
+                  <article
+                    key={item.productId}
+                    className="cart-item"
+                  >
+
+                    <div className="cart-item-image">
+                      <span>🛍️</span>
+                    </div>
+
+                    <div className="cart-item-info">
+
+                      <h2>{item.name}</h2>
+
+                      <p className="cart-item-price">
+                        ₹{item.price} each
+                      </p>
+
+                      <p className="cart-item-stock">
+                        {item.stock} available
+                      </p>
+
+                    </div>
+
+                    <div className="cart-item-controls">
+
+                      <span className="cart-quantity-label">
+                        Quantity
+                      </span>
+
+                      <div className="cart-quantity-controls">
+
+                        <button
+                          onClick={() =>
+                            updateQuantity(
+                              item.productId,
+                              item.quantity - 1
+                            )
+                          }
+                          disabled={item.quantity <= 1}
+                          aria-label="Decrease quantity"
+                        >
+                          −
+                        </button>
+
+                        <span>
+                          {item.quantity}
+                        </span>
+
+                        <button
+                          onClick={() =>
+                            updateQuantity(
+                              item.productId,
+                              item.quantity + 1
+                            )
+                          }
+                          disabled={
+                            item.quantity >=
+                            item.stock
+                          }
+                          aria-label="Increase quantity"
+                        >
+                          +
+                        </button>
+
+                      </div>
+
+                    </div>
+
+                    <div className="cart-item-total">
+                      <strong>
+                        ₹{subtotal}
+                      </strong>
+
+                      <button
+                        onClick={() =>
+                          removeItem(item.productId)
+                        }
+                        className="remove-item-button"
+                      >
+                        Remove
+                      </button>
+                    </div>
+
+                  </article>
+                );
+              })}
+
+            </div>
+
+            <button
+              onClick={() => navigate('/')}
+              className="continue-shopping-link"
+            >
+              ← Continue Shopping
+            </button>
+
+          </section>
+
+          {/* Summary */}
+          <aside className="cart-summary">
+
+            <div className="summary-heading">
+              <h2>Order Summary</h2>
+            </div>
+
+            <div className="summary-row">
+              <span>
+                Items ({totalItems})
+              </span>
+
+              <span>
+                ₹{total}
+              </span>
+            </div>
+
+            <div className="summary-row">
+              <span>Delivery</span>
+
+              <span className="free-delivery">
+                FREE
+              </span>
+            </div>
+
+            <div className="summary-divider"></div>
+
+            <div className="summary-total">
+              <span>Total</span>
+
+              <strong>
+                ₹{total}
+              </strong>
+            </div>
+
+            <button
+              onClick={() =>
+                navigate('/checkout')
+              }
+              className="checkout-button"
+            >
+              Proceed to Checkout
+              <span>→</span>
+            </button>
+
+            <div className="secure-checkout">
+              <span>🔒</span>
+
+              <p>
+                Secure checkout
+                <br />
+                Your order information is protected.
+              </p>
+            </div>
+
+          </aside>
+
         </div>
 
-        <div style={styles.actions}>
-          <button
-            onClick={() => navigate('/')}
-            style={styles.secondaryButton}
-          >
-            Continue Shopping
-          </button>
-
-          <button
-            onClick={() => navigate('/checkout')}
-            style={styles.primaryButton}
-          >
-            Proceed to Checkout
-          </button>
-        </div>
       </div>
-    </div>
+
+    </main>
   );
 }
-
-const styles = {
-  page: {
-    padding: '2rem',
-    maxWidth: '1000px',
-    margin: '0 auto',
-  },
-
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '1.5rem',
-  },
-
-  clearButton: {
-    padding: '0.6rem 1rem',
-    border: '1px solid #ccc',
-    borderRadius: '6px',
-    backgroundColor: '#fff',
-    cursor: 'pointer',
-  },
-
-  cartContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
-  },
-
-  cartItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1.5rem',
-    padding: '1rem',
-    border: '1px solid #ddd',
-    borderRadius: '10px',
-  },
-
-  itemInfo: {
-    flex: 1,
-  },
-
-  price: {
-    color: '#666',
-    margin: '0.25rem 0',
-  },
-
-  stockText: {
-    color: '#666',
-    fontSize: '0.9rem',
-    margin: 0,
-  },
-
-  quantitySection: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.75rem',
-  },
-
-  quantityButton: {
-    width: '32px',
-    height: '32px',
-    border: '1px solid #ccc',
-    borderRadius: '6px',
-    backgroundColor: '#fff',
-    cursor: 'pointer',
-    fontSize: '1.1rem',
-  },
-
-  quantity: {
-    minWidth: '25px',
-    textAlign: 'center',
-  },
-
-  subtotal: {
-    minWidth: '80px',
-    textAlign: 'right',
-  },
-
-  removeButton: {
-    border: 'none',
-    backgroundColor: 'transparent',
-    color: '#c00',
-    cursor: 'pointer',
-  },
-
-  summary: {
-    marginTop: '2rem',
-    padding: '1.5rem',
-    border: '1px solid #ddd',
-    borderRadius: '10px',
-  },
-
-  totalRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    fontSize: '1.3rem',
-    marginTop: '1rem',
-  },
-
-  actions: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    gap: '1rem',
-    marginTop: '1.5rem',
-  },
-
-  primaryButton: {
-    padding: '0.75rem 1.2rem',
-    border: 'none',
-    borderRadius: '6px',
-    backgroundColor: '#222',
-    color: '#fff',
-    cursor: 'pointer',
-  },
-
-  secondaryButton: {
-    padding: '0.75rem 1.2rem',
-    border: '1px solid #ccc',
-    borderRadius: '6px',
-    backgroundColor: '#fff',
-    cursor: 'pointer',
-  },
-
-  emptyContainer: {
-    padding: '4rem 2rem',
-    textAlign: 'center',
-  },
-
-  emptyText: {
-    color: '#666',
-    margin: '1.5rem 0',
-  },
-};

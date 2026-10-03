@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react';
 import api from '../api/axios';
+import './MyOrders.css';
 
-const STATUS_FLOW = ['placed', 'packed', 'shipped', 'delivered'];
+const STATUS_FLOW = [
+  'placed',
+  'packed',
+  'shipped',
+  'delivered',
+];
 
 export default function MyOrders() {
   const [orders, setOrders] = useState([]);
@@ -25,199 +31,205 @@ export default function MyOrders() {
 
   if (loading) {
     return (
-      <div style={styles.message}>
-        <p>Loading your orders...</p>
-      </div>
+      <main className="orders-page">
+        <div className="orders-message">
+          <div className="orders-loading-icon">📦</div>
+          <h2>Loading your orders</h2>
+          <p>Please wait while we fetch your order history.</p>
+          <div className="orders-spinner"></div>
+        </div>
+      </main>
     );
   }
 
   if (error) {
     return (
-      <div style={styles.message}>
-        <p style={styles.error}>{error}</p>
-      </div>
+      <main className="orders-page">
+        <div className="orders-message orders-error-message">
+          <div className="orders-message-icon">!</div>
+          <h2>Something went wrong</h2>
+          <p>{error}</p>
+        </div>
+      </main>
     );
   }
 
   return (
-    <div style={styles.page}>
-      <h2>My Orders</h2>
+    <main className="orders-page">
+      <div className="orders-container">
 
-      {orders.length === 0 && (
-        <div style={styles.empty}>
-          <p>You haven't placed any orders yet.</p>
-        </div>
-      )}
+        <header className="orders-header">
+          <div>
+            <span className="orders-eyebrow">
+              YOUR ACCOUNT
+            </span>
 
-      {orders.length > 0 && (
-        <div style={styles.orders}>
-          {orders.map((order) => {
-            const currentStatus =
-              STATUS_FLOW.indexOf(order.status);
+            <h1>My Orders</h1>
 
-            return (
-              <div
-                key={order._id}
-                style={styles.orderCard}
-              >
-                <div style={styles.orderHeader}>
-                  <div>
-                    <h3>Order #{order._id.slice(-6)}</h3>
+            <p>
+              Track your purchases and view your order history.
+            </p>
+          </div>
 
-                    <p style={styles.orderDate}>
-                      Order total: ₹{order.totalAmount}
-                    </p>
+          <div className="orders-count">
+            <strong>{orders.length}</strong>
+            <span>
+              {orders.length === 1 ? 'Order' : 'Orders'}
+            </span>
+          </div>
+        </header>
+
+        {orders.length === 0 && (
+          <section className="orders-empty">
+            <div className="orders-empty-icon">
+              📦
+            </div>
+
+            <span className="orders-eyebrow">
+              NO ORDERS YET
+            </span>
+
+            <h2>Your order history is empty</h2>
+
+            <p>
+              You haven't placed any orders yet.
+              Explore DirectMart and discover products
+              from local sellers.
+            </p>
+
+            <a
+              href="/"
+              className="orders-shop-button"
+            >
+              Start Shopping
+              <span>→</span>
+            </a>
+          </section>
+        )}
+
+        {orders.length > 0 && (
+          <div className="orders-list">
+            {orders.map((order) => {
+              const currentStatus =
+                STATUS_FLOW.indexOf(order.status);
+
+              return (
+                <article
+                  key={order._id}
+                  className="order-card"
+                >
+                  <div className="order-card-header">
+                    <div className="order-heading">
+                      <span className="order-label">
+                        ORDER
+                      </span>
+
+                      <h2>
+                        #{order._id.slice(-6).toUpperCase()}
+                      </h2>
+                    </div>
+
+                    <div className="order-status">
+                      <span className="status-dot"></span>
+                      {order.status}
+                    </div>
                   </div>
 
-                  <span style={styles.status}>
-                    {order.status}
-                  </span>
-                </div>
-
-                <div style={styles.items}>
-                  <h4>Items</h4>
-
-                  {order.items.map((item, index) => (
-                    <div
-                      key={index}
-                      style={styles.item}
-                    >
-                      <span>
-                        {item.name} × {item.quantity}
-                      </span>
-
-                      <span>
-                        ₹{item.price * item.quantity}
-                      </span>
+                  <div className="order-total-bar">
+                    <div>
+                      <span>Order Total</span>
+                      <strong>
+                        ₹{order.totalAmount}
+                      </strong>
                     </div>
-                  ))}
-                </div>
 
-                <div style={styles.progress}>
-                  {STATUS_FLOW.map((status, index) => (
-                    <div
-                      key={status}
-                      style={{
-                        ...styles.progressStep,
-                        fontWeight:
-                          index <= currentStatus
-                            ? 'bold'
-                            : 'normal',
-                      }}
-                    >
+                    <div>
+                      <span>Items</span>
+                      <strong>
+                        {order.items.reduce(
+                          (sum, item) =>
+                            sum + item.quantity,
+                          0
+                        )}
+                      </strong>
+                    </div>
+                  </div>
+
+                  <section className="order-items">
+                    <div className="section-heading">
+                      <h3>Items in this order</h3>
+                    </div>
+
+                    {order.items.map((item, index) => (
                       <div
-                        style={{
-                          ...styles.dot,
-                          opacity:
-                            index <= currentStatus
-                              ? 1
-                              : 0.3,
-                        }}
-                      />
+                        key={index}
+                        className="order-item"
+                      >
+                        <div className="order-item-icon">
+                          🛍️
+                        </div>
 
-                      <span>
-                        {status}
-                      </span>
+                        <div className="order-item-info">
+                          <h4>{item.name}</h4>
+
+                          <p>
+                            ₹{item.price} ×{' '}
+                            {item.quantity}
+                          </p>
+                        </div>
+
+                        <strong className="order-item-price">
+                          ₹{item.price * item.quantity}
+                        </strong>
+                      </div>
+                    ))}
+                  </section>
+
+                  <section className="order-progress">
+                    <div className="section-heading">
+                      <h3>Order Progress</h3>
                     </div>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
+
+                    <div className="progress-track">
+                      <div className="progress-line"></div>
+
+                      {STATUS_FLOW.map(
+                        (status, index) => {
+                          const completed =
+                            index <= currentStatus;
+
+                          return (
+                            <div
+                              key={status}
+                              className={`progress-step ${
+                                completed
+                                  ? 'progress-completed'
+                                  : ''
+                              }`}
+                            >
+                              <div className="progress-dot">
+                                {completed &&
+                                  index <
+                                    currentStatus && (
+                                    <span>✓</span>
+                                  )}
+                              </div>
+
+                              <span>
+                                {status}
+                              </span>
+                            </div>
+                          );
+                        }
+                      )}
+                    </div>
+                  </section>
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </main>
   );
 }
-
-const styles = {
-  page: {
-    padding: '2rem',
-    maxWidth: '900px',
-    margin: '0 auto',
-  },
-
-  orders: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1.5rem',
-    marginTop: '1.5rem',
-  },
-
-  orderCard: {
-    border: '1px solid #ddd',
-    borderRadius: '12px',
-    padding: '1.5rem',
-  },
-
-  orderHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: '1rem',
-    borderBottom: '1px solid #eee',
-    paddingBottom: '1rem',
-  },
-
-  orderDate: {
-    color: '#666',
-    margin: 0,
-  },
-
-  status: {
-    padding: '0.5rem 0.8rem',
-    borderRadius: '20px',
-    backgroundColor: '#eee',
-    textTransform: 'capitalize',
-  },
-
-  items: {
-    marginTop: '1rem',
-  },
-
-  item: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '0.7rem 0',
-    borderBottom: '1px solid #f0f0f0',
-  },
-
-  progress: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: '1.5rem',
-    paddingTop: '1rem',
-    borderTop: '1px solid #eee',
-  },
-
-  progressStep: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '0.4rem',
-    textTransform: 'capitalize',
-    fontSize: '0.85rem',
-  },
-
-  dot: {
-    width: '12px',
-    height: '12px',
-    borderRadius: '50%',
-    backgroundColor: '#222',
-  },
-
-  empty: {
-    textAlign: 'center',
-    padding: '3rem',
-    color: '#666',
-  },
-
-  message: {
-    padding: '3rem',
-    textAlign: 'center',
-  },
-
-  error: {
-    color: 'red',
-  },
-};

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api/axios';
+import './DomainPage.css';
 
 export default function DomainPage() {
   const { domainKey } = useParams();
@@ -60,238 +61,277 @@ export default function DomainPage() {
     }
   };
 
+  const clearSearch = () => {
+    setSearch('');
+    setPage(1);
+  };
+
   const domainName =
     domainKey === 'pottery'
       ? 'Pottery & Arts'
       : domainKey
-          ?.charAt(0)
-          .toUpperCase() + domainKey?.slice(1);
+        ? domainKey.charAt(0).toUpperCase() + domainKey.slice(1)
+        : 'Marketplace';
+
+  const domainEmoji =
+    domainKey === 'farming'
+      ? '🌾'
+      : domainKey === 'fishing'
+        ? '🐟'
+        : domainKey === 'pottery'
+          ? '🏺'
+          : domainKey === 'dairy'
+            ? '🥛'
+            : '🛍️';
 
   return (
-    <div style={styles.page}>
-      <div style={styles.header}>
-        <h2>{domainName} Products</h2>
+    <main className="domain-page">
 
-        <p style={styles.subtitle}>
-          Browse products from local producers.
-        </p>
+      <section className="domain-hero">
+        <div className="domain-hero-pattern"></div>
 
-        <input
-          type="text"
-          placeholder="Search products..."
-          value={search}
-          onChange={handleSearchChange}
-          style={styles.search}
-        />
-      </div>
-
-      {loading && (
-        <p style={styles.message}>
-          Loading products...
-        </p>
-      )}
-
-      {error && (
-        <p style={styles.error}>
-          {error}
-        </p>
-      )}
-
-      {!loading && !error && products.length === 0 && (
-        <p style={styles.message}>
-          No products found in this domain yet.
-        </p>
-      )}
-
-      {!loading && !error && products.length > 0 && (
-        <>
-          <div style={styles.grid}>
-            {products.map((product) => {
-              const productId = product.id || product._id;
-
-              return (
-                <Link
-                  key={productId}
-                  to={`/product/${productId}`}
-                  style={styles.card}
-                >
-                  {product.imageUrl ? (
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      style={styles.image}
-                    />
-                  ) : (
-                    <div style={styles.noImage}>
-                      No Image
-                    </div>
-                  )}
-
-                  <div style={styles.cardContent}>
-                    <h3 style={styles.productName}>
-                      {product.name}
-                    </h3>
-
-                    <p style={styles.price}>
-                      ₹{product.price}
-                    </p>
-
-                    {product.description && (
-                      <p style={styles.description}>
-                        {product.description}
-                      </p>
-                    )}
-
-                    <p style={styles.stock}>
-                      {product.stock > 0
-                        ? `${product.stock} available`
-                        : 'Out of stock'}
-                    </p>
-
-                    <span style={styles.viewButton}>
-                      View Product
-                    </span>
-                  </div>
-                </Link>
-              );
-            })}
+        <div className="domain-hero-content">
+          <div className="domain-icon">
+            {domainEmoji}
           </div>
 
-          {totalPages > 1 && (
-            <div style={styles.pagination}>
-              <button
-                onClick={goToPreviousPage}
-                disabled={page === 1}
-              >
-                Previous
-              </button>
+          <span className="domain-eyebrow">
+            DIRECT FROM LOCAL PRODUCERS
+          </span>
 
-              <span>
-                Page {page} of {totalPages}
-              </span>
+          <h1>{domainName}</h1>
 
+          <p>
+            Discover quality products from local producers
+            and shop directly from the source.
+          </p>
+        </div>
+      </section>
+
+      <section className="domain-content">
+
+        <div className="domain-toolbar">
+
+          <div className="domain-results-heading">
+            <span className="domain-section-label">
+              MARKETPLACE
+            </span>
+
+            <h2>Explore {domainName}</h2>
+
+            {!loading && !error && (
+              <p>
+                {products.length} product
+                {products.length !== 1 ? 's' : ''} available
+              </p>
+            )}
+          </div>
+
+          <div className="domain-search">
+            <span className="search-icon">⌕</span>
+
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={search}
+              onChange={handleSearchChange}
+            />
+
+            {search && (
               <button
-                onClick={goToNextPage}
-                disabled={page === totalPages}
+                type="button"
+                className="clear-search"
+                onClick={clearSearch}
+                aria-label="Clear search"
               >
-                Next
+                ×
               </button>
+            )}
+          </div>
+
+        </div>
+
+        {search && !loading && !error && (
+          <div className="search-result-note">
+            <span>Searching for</span>
+            <strong>"{search}"</strong>
+            <button
+              type="button"
+              onClick={clearSearch}
+            >
+              Clear
+            </button>
+          </div>
+        )}
+
+        {loading && (
+          <div className="domain-state">
+            <div className="loading-spinner"></div>
+
+            <h3>Finding products...</h3>
+
+            <p>
+              Please wait while we load the latest products.
+            </p>
+          </div>
+        )}
+
+        {error && (
+          <div className="domain-state domain-error-state">
+            <div className="state-icon">!</div>
+
+            <h3>Something went wrong</h3>
+
+            <p>{error}</p>
+          </div>
+        )}
+
+        {!loading && !error && products.length === 0 && (
+          <div className="domain-state">
+            <div className="state-icon">🔎</div>
+
+            <span className="empty-state-label">
+              NO PRODUCTS FOUND
+            </span>
+
+            <h3>No products found</h3>
+
+            <p>
+              {search
+                ? `We couldn't find any products matching "${search}".`
+                : 'There are no products available in this domain yet.'}
+            </p>
+
+            {search && (
+              <button
+                type="button"
+                className="clear-results-button"
+                onClick={clearSearch}
+              >
+                Clear search
+              </button>
+            )}
+          </div>
+        )}
+
+        {!loading && !error && products.length > 0 && (
+          <>
+            <div className="product-grid">
+
+              {products.map((product) => {
+                const productId = product.id || product._id;
+                const isInStock = product.stock > 0;
+
+                return (
+                  <Link
+                    key={productId}
+                    to={`/product/${productId}`}
+                    className="product-card"
+                  >
+                    <div className="product-image-wrapper">
+
+                      {product.imageUrl ? (
+                        <img
+                          src={product.imageUrl}
+                          alt={product.name}
+                          className="product-image"
+                        />
+                      ) : (
+                        <div className="product-no-image">
+                          <span>🛍️</span>
+                          <small>No image available</small>
+                        </div>
+                      )}
+
+                      <span
+                        className={`stock-badge ${
+                          isInStock
+                            ? 'in-stock'
+                            : 'out-of-stock'
+                        }`}
+                      >
+                        <span className="stock-dot"></span>
+
+                        {isInStock
+                          ? 'In stock'
+                          : 'Out of stock'}
+                      </span>
+                    </div>
+
+                    <div className="product-card-content">
+
+                      <div className="product-domain-tag">
+                        {domainName}
+                      </div>
+
+                      <h3 className="product-name">
+                        {product.name}
+                      </h3>
+
+                      <div className="product-price">
+                        ₹{product.price}
+                      </div>
+
+                      {product.description && (
+                        <p className="product-description">
+                          {product.description}
+                        </p>
+                      )}
+
+                      <div className="product-card-footer">
+
+                        <span className="product-stock">
+                          {isInStock
+                            ? `${product.stock} available`
+                            : 'Currently unavailable'}
+                        </span>
+
+                        <span className="view-product">
+                          View <span>→</span>
+                        </span>
+
+                      </div>
+
+                    </div>
+                  </Link>
+                );
+              })}
+
             </div>
-          )}
-        </>
-      )}
-    </div>
+
+            {totalPages > 1 && (
+              <div className="pagination">
+
+                <button
+                  type="button"
+                  onClick={goToPreviousPage}
+                  disabled={page === 1}
+                  className="pagination-button"
+                >
+                  ← Previous
+                </button>
+
+                <div className="pagination-info">
+                  <span>Page</span>
+                  <strong>{page}</strong>
+                  <span>of {totalPages}</span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={goToNextPage}
+                  disabled={page === totalPages}
+                  className="pagination-button"
+                >
+                  Next →
+                </button>
+
+              </div>
+            )}
+          </>
+        )}
+
+      </section>
+    </main>
   );
 }
-
-const styles = {
-  page: {
-    padding: '2rem',
-    maxWidth: '1200px',
-    margin: '0 auto',
-  },
-
-  header: {
-    textAlign: 'center',
-    marginBottom: '2rem',
-  },
-
-  subtitle: {
-    color: '#666',
-    marginBottom: '1.5rem',
-  },
-
-  search: {
-    width: '100%',
-    maxWidth: '400px',
-    padding: '0.75rem',
-    border: '1px solid #ccc',
-    borderRadius: '8px',
-    fontSize: '1rem',
-  },
-
-  grid: {
-    display: 'grid',
-    gridTemplateColumns:
-      'repeat(auto-fill, minmax(220px, 1fr))',
-    gap: '1.5rem',
-  },
-
-  card: {
-    border: '1px solid #ddd',
-    borderRadius: '12px',
-    overflow: 'hidden',
-    textDecoration: 'none',
-    color: '#222',
-    backgroundColor: '#fff',
-  },
-
-  image: {
-    width: '100%',
-    height: '180px',
-    objectFit: 'cover',
-    display: 'block',
-  },
-
-  noImage: {
-    width: '100%',
-    height: '180px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#f3f3f3',
-    color: '#777',
-  },
-
-  cardContent: {
-    padding: '1rem',
-  },
-
-  productName: {
-    margin: '0 0 0.5rem',
-  },
-
-  price: {
-    fontSize: '1.2rem',
-    fontWeight: 'bold',
-    margin: '0.5rem 0',
-  },
-
-  description: {
-    color: '#666',
-    fontSize: '0.9rem',
-    minHeight: '40px',
-  },
-
-  stock: {
-    fontSize: '0.9rem',
-    marginBottom: '1rem',
-  },
-
-  viewButton: {
-    display: 'inline-block',
-    padding: '0.6rem 1rem',
-    borderRadius: '6px',
-    backgroundColor: '#222',
-    color: '#fff',
-  },
-
-  message: {
-    textAlign: 'center',
-    padding: '2rem',
-  },
-
-  error: {
-    textAlign: 'center',
-    padding: '1rem',
-    color: 'red',
-  },
-
-  pagination: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: '1rem',
-    marginTop: '2rem',
-  },
-};

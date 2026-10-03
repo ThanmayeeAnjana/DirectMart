@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
+import './ForgotPassword.css';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -46,85 +47,106 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: 500,
-        margin: '40px auto',
-        padding: '20px',
-      }}
-    >
-      <h2>Forgot Password</h2>
+    <main className="forgot-page">
+      <div className="forgot-container">
 
-      <p>
-        Enter your email address to request a password reset.
-      </p>
+        <div className="forgot-brand">
+          <div className="forgot-brand-icon">🔐</div>
 
-      {message && (
-        <p style={{ color: 'green' }}>
-          {message}
-        </p>
-      )}
-
-      {error && (
-        <p style={{ color: 'red' }}>
-          {error}
-        </p>
-      )}
-
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '15px' }}>
-          <label>Email</label>
-          <br />
-
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            style={{
-              width: '100%',
-              padding: '8px',
-            }}
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-        >
-          {loading
-            ? 'Generating reset link...'
-            : 'Reset Password'}
-        </button>
-      </form>
-
-      {resetLink && (
-        <div
-          style={{
-            marginTop: '20px',
-            padding: '15px',
-            border: '1px solid #ddd',
-            borderRadius: '8px',
-          }}
-        >
-          <strong>Development Reset Link</strong>
+          <h1>Reset your password</h1>
 
           <p>
-            In a real application, this link would be
-            sent to the user's email.
+            No worries. Enter your email and we'll help
+            you get back into your DirectMart account.
           </p>
-
-          <Link to={resetLink.replace('http://localhost:3000', '')}>
-            Open Reset Password Page
-          </Link>
         </div>
-      )}
 
-      <p style={{ marginTop: '20px' }}>
-        <Link to="/login">
-          Back to Login
-        </Link>
-      </p>
-    </div>
+        <div className="forgot-card">
+
+          <div className="forgot-card-header">
+            <h2>Forgot password?</h2>
+            <p>
+              Enter the email address associated with your account.
+            </p>
+          </div>
+
+          {message && (
+            <div className="forgot-success">
+              {message}
+            </div>
+          )}
+
+          {error && (
+            <div className="forgot-error">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="forgot-form">
+
+            <div className="forgot-form-group">
+              <label htmlFor="forgot-email">
+                Email address
+              </label>
+
+              <input
+                id="forgot-email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="forgot-submit"
+              disabled={loading}
+            >
+              {loading
+                ? 'Generating reset link...'
+                : 'Send reset instructions'}
+            </button>
+
+          </form>
+
+          {resetLink && (
+            <div className="reset-link-box">
+              <div className="reset-link-title">
+                Development Reset Link
+              </div>
+
+              <p>
+                In a real application, this link would be
+                sent to the user's email.
+              </p>
+
+              <Link
+                className="reset-link-button"
+                to={resetLink.replace(
+                  'http://localhost:3000',
+                  ''
+                )}
+              >
+                Open Reset Password Page
+              </Link>
+            </div>
+          )}
+
+          <div className="forgot-back">
+            <Link to="/login">
+              ← Back to Login
+            </Link>
+          </div>
+
+        </div>
+
+        <p className="forgot-footer">
+          Your account security matters to us.
+        </p>
+
+      </div>
+    </main>
   );
 }

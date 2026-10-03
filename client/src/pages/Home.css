@@ -1,0 +1,1025 @@
+/* =====================================================
+   DIRECTMART HOME PAGE
+   ===================================================== */
+
+.home-page {
+  min-height: 100vh;
+  background: #f7faf8;
+  color: #17211b;
+}
+
+
+/* =====================================================
+   HERO
+   ===================================================== */
+
+.hero-section {
+  position: relative;
+
+  overflow: hidden;
+
+  padding: 90px 24px 85px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #edf8f1 0%,
+      #f8fbf8 50%,
+      #eef7f1 100%
+    );
+}
+
+
+/* Decorative circles */
+
+.hero-section::before {
+  content: "";
+
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  top: -220px;
+  right: -120px;
+
+  border-radius: 50%;
+
+  background: rgba(23, 107, 77, 0.07);
+}
+
+
+.hero-section::after {
+  content: "";
+
+  position: absolute;
+
+  width: 300px;
+  height: 300px;
+
+  bottom: -180px;
+  left: -100px;
+
+  border-radius: 50%;
+
+  background: rgba(228, 166, 58, 0.08);
+}
+
+
+.hero-content {
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 900px;
+
+  margin: 0 auto;
+
+  text-align: center;
+}
+
+
+/* =====================================================
+   HERO BADGE
+   ===================================================== */
+
+.hero-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 8px 14px;
+
+  margin-bottom: 22px;
+
+  border: 1px solid #cfe5d7;
+
+  border-radius: 30px;
+
+  background: rgba(255, 255, 255, 0.75);
+
+  color: #176b4d;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+
+/* =====================================================
+   HERO TITLE
+   ===================================================== */
+
+.hero-title {
+  max-width: 850px;
+
+  margin: 0 auto;
+
+  font-size: clamp(42px, 6vw, 72px);
+
+  line-height: 1.05;
+
+  letter-spacing: -2.5px;
+
+  font-weight: 800;
+
+  color: #17211b;
+}
+
+
+.hero-title span {
+  color: #176b4d;
+}
+
+
+/* =====================================================
+   HERO SUBTITLE
+   ===================================================== */
+
+.hero-subtitle {
+  max-width: 650px;
+
+  margin: 26px auto 0;
+
+  color: #5b6961;
+
+  font-size: 18px;
+
+  line-height: 1.7;
+}
+
+
+/* =====================================================
+   HERO BUTTONS
+   ===================================================== */
+
+.hero-actions {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  margin-top: 32px;
+}
+
+
+.hero-primary-button,
+.hero-secondary-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  min-height: 50px;
+
+  padding: 0 22px;
+
+  border-radius: 10px;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.hero-primary-button {
+  background: #176b4d;
+
+  color: white;
+
+  box-shadow:
+    0 8px 20px rgba(23, 107, 77, 0.18);
+}
+
+
+.hero-primary-button:hover {
+  background: #0f5139;
+
+  color: white;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(23, 107, 77, 0.23);
+}
+
+
+.hero-secondary-button {
+  background: white;
+
+  color: #176b4d;
+
+  border: 1px solid #cfe0d5;
+}
+
+
+.hero-secondary-button:hover {
+  background: #eaf5ee;
+
+  color: #0f5139;
+
+  transform: translateY(-2px);
+}
+
+
+/* =====================================================
+   HERO STATS
+   ===================================================== */
+
+.hero-stats {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 30px;
+
+  margin-top: 50px;
+}
+
+
+.hero-stat {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+
+.hero-stat strong {
+  font-size: 19px;
+
+  color: #176b4d;
+}
+
+
+.hero-stat span {
+  color: #768078;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+.stat-divider {
+  width: 1px;
+
+  height: 35px;
+
+  background: #cddbd2;
+}
+
+
+/* =====================================================
+   DOMAIN SECTION
+   ===================================================== */
+
+.domains-section {
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  padding: 90px 24px;
+}
+
+
+/* =====================================================
+   SECTION HEADING
+   ===================================================== */
+
+.section-heading {
+  text-align: center;
+
+  max-width: 650px;
+
+  margin: 0 auto 45px;
+}
+
+
+.section-label {
+  margin-bottom: 10px;
+
+  color: #176b4d;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+
+.section-heading h2 {
+  margin: 0;
+
+  font-size: 38px;
+
+  letter-spacing: -1px;
+
+  color: #17211b;
+}
+
+
+.section-heading p {
+  margin: 12px 0 0;
+
+  color: #6d776f;
+
+  font-size: 16px;
+}
+
+
+/* =====================================================
+   DOMAIN GRID
+   ===================================================== */
+
+.domain-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 18px;
+}
+
+
+/* =====================================================
+   DOMAIN CARD
+   ===================================================== */
+
+.domain-card {
+  position: relative;
+
+  min-height: 330px;
+
+  padding: 25px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  overflow: hidden;
+
+  border: 1px solid #dfe8e2;
+
+  border-radius: 18px;
+
+  background: white;
+
+  color: #17211b;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 3px 12px rgba(23, 33, 27, 0.04);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+
+.domain-card:hover {
+  transform: translateY(-7px);
+
+  border-color: #b9d8c5;
+
+  box-shadow:
+    0 18px 35px rgba(23, 33, 27, 0.10);
+
+  color: #17211b;
+}
+
+
+/* Different subtle card backgrounds */
+
+.domain-card-1 {
+  background:
+    linear-gradient(145deg, #ffffff, #f0f9f3);
+}
+
+
+.domain-card-2 {
+  background:
+    linear-gradient(145deg, #ffffff, #eef7fc);
+}
+
+
+.domain-card-3 {
+  background:
+    linear-gradient(145deg, #ffffff, #fbf3ed);
+}
+
+
+.domain-card-4 {
+  background:
+    linear-gradient(145deg, #ffffff, #f2f7fb);
+}
+
+
+/* =====================================================
+   DOMAIN CARD TOP
+   ===================================================== */
+
+.domain-card-top {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+}
+
+
+.domain-icon {
+  width: 65px;
+
+  height: 65px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.8);
+
+  border: 1px solid rgba(0, 0, 0, 0.05);
+
+  font-size: 34px;
+}
+
+
+.domain-arrow {
+  width: 35px;
+
+  height: 35px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.8);
+
+  color: #176b4d;
+
+  font-size: 18px;
+
+  opacity: 0.7;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+
+.domain-card:hover .domain-arrow {
+  transform: translate(3px, -3px);
+
+  opacity: 1;
+}
+
+
+/* =====================================================
+   DOMAIN CARD CONTENT
+   ===================================================== */
+
+.domain-card-content h3 {
+  margin: 0 0 9px;
+
+  font-size: 21px;
+
+  letter-spacing: -0.3px;
+}
+
+
+.domain-card-content p {
+  min-height: 52px;
+
+  margin: 0;
+
+  color: #68746c;
+
+  font-size: 14px;
+
+  line-height: 1.55;
+}
+
+
+.domain-link {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin-top: 20px;
+
+  color: #176b4d;
+
+  font-size: 13px;
+
+  font-weight: 800;
+}
+
+
+.domain-link span {
+  transition:
+    transform 0.2s ease;
+}
+
+
+.domain-card:hover .domain-link span {
+  transform:
+    translateX(4px);
+}
+
+
+/* =====================================================
+   WHY DIRECTMART
+   ===================================================== */
+
+.why-section {
+  padding: 90px 24px;
+
+  background: #173d30;
+
+  color: white;
+}
+
+
+.why-content {
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    0.9fr 1.1fr;
+
+  gap: 70px;
+
+  align-items: center;
+}
+
+
+.why-text .section-label {
+  color: #8fd3ac;
+}
+
+
+.why-text h2 {
+  margin: 0;
+
+  font-size: clamp(36px, 4vw, 52px);
+
+  line-height: 1.1;
+
+  letter-spacing: -1.5px;
+}
+
+
+.why-text h2 span {
+  color: #9edab5;
+}
+
+
+.why-text p {
+  max-width: 500px;
+
+  margin: 22px 0 28px;
+
+  color: #c8d8cf;
+
+  font-size: 16px;
+
+  line-height: 1.7;
+}
+
+
+.why-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 12px 18px;
+
+  border-radius: 9px;
+
+  background: white;
+
+  color: #173d30;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.why-button:hover {
+  background: #eaf6ef;
+
+  color: #173d30;
+
+  transform: translateY(-2px);
+}
+
+
+/* =====================================================
+   BENEFITS
+   ===================================================== */
+
+.benefits-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 15px;
+}
+
+
+.benefit-card {
+  padding: 24px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  border-radius: 15px;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.benefit-card:hover {
+  background:
+    rgba(255, 255, 255, 0.10);
+
+  transform:
+    translateY(-3px);
+}
+
+
+.benefit-icon {
+  width: 45px;
+
+  height: 45px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-bottom: 16px;
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.10);
+
+  font-size: 22px;
+}
+
+
+.benefit-card h3 {
+  margin: 0 0 7px;
+
+  font-size: 17px;
+}
+
+
+.benefit-card p {
+  margin: 0;
+
+  color: #b9ccc1;
+
+  font-size: 13px;
+
+  line-height: 1.55;
+}
+
+
+/* =====================================================
+   CTA
+   ===================================================== */
+
+.home-cta {
+  padding: 85px 24px;
+
+  background:
+    #f7faf8;
+}
+
+
+.cta-content {
+  max-width: 760px;
+
+  margin: 0 auto;
+
+  text-align: center;
+
+  padding: 55px 30px;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eaf6ef,
+      #f4f9f5
+    );
+
+  border: 1px solid #d5e8dc;
+}
+
+
+.cta-icon {
+  width: 60px;
+
+  height: 60px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin: 0 auto 18px;
+
+  border-radius: 50%;
+
+  background: white;
+
+  font-size: 28px;
+
+  box-shadow:
+    0 5px 15px rgba(23, 33, 27, 0.07);
+}
+
+
+.cta-content h2 {
+  margin: 0;
+
+  font-size: 34px;
+
+  letter-spacing: -0.8px;
+}
+
+
+.cta-content p {
+  max-width: 550px;
+
+  margin: 13px auto 25px;
+
+  color: #657269;
+
+  font-size: 15px;
+}
+
+
+.cta-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 13px 21px;
+
+  border-radius: 9px;
+
+  background: #176b4d;
+
+  color: white;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.cta-button:hover {
+  background: #0f5139;
+
+  color: white;
+
+  transform: translateY(-2px);
+}
+
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media (max-width: 1000px) {
+
+  .domain-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+
+  .why-content {
+    grid-template-columns:
+      1fr;
+
+    gap: 45px;
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 650px) {
+
+  .hero-section {
+    padding:
+      65px 18px 60px;
+  }
+
+
+  .hero-title {
+    font-size: 42px;
+
+    letter-spacing: -1.5px;
+  }
+
+
+  .hero-subtitle {
+    font-size: 15px;
+  }
+
+
+  .hero-actions {
+    flex-direction: column;
+
+    width: 100%;
+  }
+
+
+  .hero-primary-button,
+  .hero-secondary-button {
+    width: 100%;
+
+    max-width: 320px;
+  }
+
+
+  .hero-stats {
+    gap: 15px;
+  }
+
+
+  .hero-stat strong {
+    font-size: 16px;
+  }
+
+
+  .hero-stat span {
+    font-size: 10px;
+  }
+
+
+  .stat-divider {
+    height: 28px;
+  }
+
+
+  .domains-section {
+    padding:
+      65px 18px;
+  }
+
+
+  .section-heading h2 {
+    font-size: 31px;
+  }
+
+
+  .domain-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .domain-card {
+    min-height: 300px;
+  }
+
+
+  .why-section {
+    padding:
+      65px 18px;
+  }
+
+
+  .why-content {
+    gap: 35px;
+  }
+
+
+  .why-text h2 {
+    font-size: 38px;
+  }
+
+
+  .benefits-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .home-cta {
+    padding:
+      60px 18px;
+  }
+
+
+  .cta-content {
+    padding:
+      40px 20px;
+  }
+
+
+  .cta-content h2 {
+    font-size: 28px;
+  }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 400px) {
+
+  .hero-title {
+    font-size: 36px;
+  }
+
+
+  .hero-stats {
+    gap: 10px;
+  }
+
+
+  .hero-stat strong {
+    font-size: 14px;
+  }
+
+
+  .hero-stat span {
+    font-size: 9px;
+  }
+
+}

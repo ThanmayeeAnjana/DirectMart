@@ -1,16 +1,24 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
+import './Checkout.css';
 
 export default function Checkout() {
   const [placing, setPlacing] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const cart = JSON.parse(
+    localStorage.getItem('cart') || '[]'
+  );
 
   const total = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
+  const totalItems = cart.reduce(
+    (sum, item) => sum + item.quantity,
     0
   );
 
@@ -50,9 +58,12 @@ export default function Checkout() {
             const verifyResponse = await api.post(
               '/payment/verify',
               {
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
+                razorpay_order_id:
+                  response.razorpay_order_id,
+                razorpay_payment_id:
+                  response.razorpay_payment_id,
+                razorpay_signature:
+                  response.razorpay_signature,
               }
             );
 
@@ -68,7 +79,8 @@ export default function Checkout() {
                 quantity: item.quantity,
               })),
               totalAmount: total,
-              paymentId: response.razorpay_payment_id,
+              paymentId:
+                response.razorpay_payment_id,
             });
 
             // 5. Clear cart
@@ -95,7 +107,7 @@ export default function Checkout() {
         },
 
         theme: {
-          color: '#3399cc',
+          color: '#2f8f46',
         },
 
         modal: {
@@ -109,7 +121,10 @@ export default function Checkout() {
       const razorpay = new window.Razorpay(options);
 
       razorpay.on('payment.failed', function (response) {
-        console.error('Payment failed:', response.error);
+        console.error(
+          'Payment failed:',
+          response.error
+        );
 
         setError(
           response.error?.description ||
@@ -134,170 +149,247 @@ export default function Checkout() {
 
   if (cart.length === 0) {
     return (
-      <div style={styles.emptyContainer}>
-        <h2>Checkout</h2>
+      <main className="checkout-page">
+        <div className="checkout-empty">
+          <div className="checkout-empty-icon">
+            🛒
+          </div>
 
-        <p>Your cart is empty.</p>
+          <span className="checkout-eyebrow">
+            CHECKOUT
+          </span>
 
-        <button
-          onClick={() => navigate('/')}
-          style={styles.primaryButton}
-        >
-          Continue Shopping
-        </button>
-      </div>
+          <h1>Your cart is empty</h1>
+
+          <p>
+            Add some products to your cart before
+            continuing to checkout.
+          </p>
+
+          <button
+            onClick={() => navigate('/')}
+            className="checkout-primary-button"
+          >
+            Continue Shopping
+            <span>→</span>
+          </button>
+        </div>
+      </main>
     );
   }
 
   return (
-    <div style={styles.page}>
-      <h2>Checkout</h2>
+    <main className="checkout-page">
+      <div className="checkout-container">
 
-      <div style={styles.content}>
-        <section style={styles.orderSection}>
-          <h3>Order Summary</h3>
+        <div className="checkout-header">
+          <div>
+            <span className="checkout-eyebrow">
+              SECURE CHECKOUT
+            </span>
 
-          {cart.map((item) => (
-            <div
-              key={item.productId}
-              style={styles.item}
-            >
+            <h1>Complete Your Order</h1>
+
+            <p>
+              Review your order and complete your
+              payment securely.
+            </p>
+          </div>
+
+          <div className="checkout-step">
+            <span className="checkout-step-number">
+              1
+            </span>
+            <span>Review & Pay</span>
+          </div>
+        </div>
+
+        <div className="checkout-layout">
+
+          {/* ORDER SUMMARY */}
+          <section className="checkout-card order-summary-card">
+            <div className="checkout-card-header">
               <div>
-                <strong>{item.name}</strong>
+                <span className="card-eyebrow">
+                  YOUR ORDER
+                </span>
 
-                <p style={styles.itemDetails}>
-                  ₹{item.price} × {item.quantity}
-                </p>
+                <h2>Order Summary</h2>
               </div>
 
-              <strong>
-                ₹{item.price * item.quantity}
-              </strong>
+              <span className="item-count">
+                {totalItems}{' '}
+                {totalItems === 1
+                  ? 'item'
+                  : 'items'}
+              </span>
             </div>
-          ))}
 
-          <div style={styles.totalRow}>
-            <span>Total</span>
-            <strong>₹{total}</strong>
+            <div className="checkout-items">
+              {cart.map((item) => (
+                <div
+                  key={item.productId}
+                  className="checkout-item"
+                >
+                  <div className="checkout-item-icon">
+                    🛍️
+                  </div>
+
+                  <div className="checkout-item-info">
+                    <h3>{item.name}</h3>
+
+                    <p>
+                      ₹{item.price} × {item.quantity}
+                    </p>
+                  </div>
+
+                  <strong className="checkout-item-total">
+                    ₹{item.price * item.quantity}
+                  </strong>
+                </div>
+              ))}
+            </div>
+
+            <div className="checkout-summary-lines">
+              <div className="checkout-summary-row">
+                <span>Items</span>
+                <span>{totalItems}</span>
+              </div>
+
+              <div className="checkout-summary-row">
+                <span>Delivery</span>
+                <span className="free-label">
+                  FREE
+                </span>
+              </div>
+            </div>
+
+            <div className="checkout-total-row">
+              <span>Total Amount</span>
+              <strong>₹{total}</strong>
+            </div>
+          </section>
+
+          {/* PAYMENT */}
+          <section className="checkout-card payment-card">
+            <div className="checkout-card-header">
+              <div>
+                <span className="card-eyebrow">
+                  PAYMENT
+                </span>
+
+                <h2>Secure Payment</h2>
+              </div>
+
+              <div className="secure-icon">
+                🔒
+              </div>
+            </div>
+
+            <div className="payment-info">
+              <div className="payment-info-icon">
+                💳
+              </div>
+
+              <div>
+                <h3>Razorpay</h3>
+
+                <p>
+                  Complete your payment securely
+                  using Razorpay test mode.
+                </p>
+              </div>
+            </div>
+
+            <div className="payment-features">
+              <div>
+                <span>✓</span>
+                Secure payment processing
+              </div>
+
+              <div>
+                <span>✓</span>
+                Payment verification
+              </div>
+
+              <div>
+                <span>✓</span>
+                Order confirmation after payment
+              </div>
+            </div>
+
+            {error && (
+              <div className="checkout-error">
+                <span>!</span>
+                <p>{error}</p>
+              </div>
+            )}
+
+            <button
+              disabled={placing}
+              onClick={handlePlaceOrder}
+              className="pay-button"
+            >
+              {placing ? (
+                <>
+                  <span className="button-spinner"></span>
+                  Opening payment...
+                </>
+              ) : (
+                <>
+                  Pay ₹{total}
+                  <span>→</span>
+                </>
+              )}
+            </button>
+
+            <button
+              disabled={placing}
+              onClick={() => navigate('/cart')}
+              className="back-cart-button"
+            >
+              ← Back to Cart
+            </button>
+
+            <div className="payment-note">
+              <span>🔒</span>
+
+              <p>
+                Your payment is processed securely.
+                DirectMart does not store your card
+                details.
+              </p>
+            </div>
+          </section>
+        </div>
+
+        <div className="checkout-trust">
+          <div>
+            <span>🛡️</span>
+            <div>
+              <strong>Secure Checkout</strong>
+              <small>Your payment is protected</small>
+            </div>
           </div>
-        </section>
 
-        <section style={styles.paymentSection}>
-          <h3>Payment</h3>
+          <div>
+            <span>🚚</span>
+            <div>
+              <strong>Direct Delivery</strong>
+              <small>Products from local sellers</small>
+            </div>
+          </div>
 
-          <p style={styles.paymentText}>
-            Complete your payment securely using
-            Razorpay test mode.
-          </p>
+          <div>
+            <span>✓</span>
+            <div>
+              <strong>Verified Orders</strong>
+              <small>Payment verified before confirmation</small>
+            </div>
+          </div>
+        </div>
 
-          {error && (
-            <p style={styles.error}>
-              {error}
-            </p>
-          )}
-
-          <button
-            disabled={placing}
-            onClick={handlePlaceOrder}
-            style={styles.primaryButton}
-          >
-            {placing
-              ? 'Opening payment...'
-              : `Pay ₹${total}`}
-          </button>
-
-          <button
-            disabled={placing}
-            onClick={() => navigate('/cart')}
-            style={styles.secondaryButton}
-          >
-            Back to Cart
-          </button>
-        </section>
       </div>
-    </div>
+    </main>
   );
 }
-
-const styles = {
-  page: {
-    padding: '2rem',
-    maxWidth: '900px',
-    margin: '0 auto',
-  },
-
-  content: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '2rem',
-    marginTop: '1.5rem',
-  },
-
-  orderSection: {
-    border: '1px solid #ddd',
-    borderRadius: '10px',
-    padding: '1.5rem',
-  },
-
-  paymentSection: {
-    border: '1px solid #ddd',
-    borderRadius: '10px',
-    padding: '1.5rem',
-  },
-
-  item: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '1rem 0',
-    borderBottom: '1px solid #eee',
-  },
-
-  itemDetails: {
-    margin: '0.3rem 0 0',
-    color: '#666',
-  },
-
-  totalRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    fontSize: '1.3rem',
-    marginTop: '1.5rem',
-  },
-
-  paymentText: {
-    color: '#666',
-    lineHeight: 1.5,
-    marginBottom: '1.5rem',
-  },
-
-  primaryButton: {
-    width: '100%',
-    padding: '0.8rem',
-    border: 'none',
-    borderRadius: '6px',
-    backgroundColor: '#222',
-    color: '#fff',
-    cursor: 'pointer',
-    marginBottom: '0.75rem',
-  },
-
-  secondaryButton: {
-    width: '100%',
-    padding: '0.8rem',
-    border: '1px solid #ccc',
-    borderRadius: '6px',
-    backgroundColor: '#fff',
-    cursor: 'pointer',
-  },
-
-  error: {
-    color: 'red',
-    marginBottom: '1rem',
-  },
-
-  emptyContainer: {
-    padding: '4rem 2rem',
-    textAlign: 'center',
-  },
-};
